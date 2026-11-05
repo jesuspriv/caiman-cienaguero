@@ -1,0 +1,2 @@
+Carpeta reservada para sonidos.
+El MVP no necesita archivos aquí: la música y los efectos se sintetizan con Web Audio API en js/audio.js.

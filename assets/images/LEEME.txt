@@ -1,0 +1,6 @@
+Imágenes del proyecto.
+Los gráficos del juego se dibujan por código en js/sprites.js y js/scenes.js.
+
+album/ contiene las fotos reales del Álbum de Ciénaga, tomadas de Wikimedia Commons
+con licencias libres (CC BY-SA 3.0 / 4.0). El autor y la licencia de cada foto se
+muestran en el álbum y están listados en README.md (sección "Fotos del álbum").

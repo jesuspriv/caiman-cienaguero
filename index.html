@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Videojuego 2D narrativo inspirado en la tradición oral del Caimán Cienaguero de Ciénaga, Magdalena.">
+  <title>El Caimán Cienaguero: La Noche de Tomasita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game" width="960" height="540"></canvas>
+
+    <!-- ===== HUD ===== -->
+    <div id="hud" class="hidden">
+      <div class="hud-left panel">
+        <div class="hud-row">VIDAS: <span id="lives-hearts"></span></div>
+        <div class="hud-row">PUNTOS: <span id="score-value">0</span></div>
+      </div>
+      <div class="hud-mission panel">
+        <div class="hud-label">MISIÓN <span id="mission-number">1/8</span></div>
+        <div id="mission-text"></div>
+        <div id="mission-hint"></div>
+      </div>
+      <div class="hud-right panel">
+        <div class="hud-row">PISTAS: <span id="clues-value">0/3</span></div>
+        <div class="hud-row">FIGURITAS: <span id="figs-value">0/6</span></div>
+      </div>
+      <button id="btn-pause-hud" class="hud-btn" aria-label="Pausa">II</button>
+      <button id="btn-map-hud" class="hud-btn map" aria-label="Mapa" title="Mapa (Q)">MAPA</button>
+    </div>
+
+    <div id="notifications"></div>
+    <div id="mission-banner" class="hidden"></div>
+    <div id="big-text" class="hidden"></div>
+
+    <!-- ===== DIÁLOGOS ===== -->
+    <div id="dialogue" class="hidden">
+      <div class="portrait-frame"><canvas id="portrait" width="192" height="192"></canvas></div>
+      <div class="dialogue-body">
+        <div id="dialogue-name"></div>
+        <div id="dialogue-text"></div>
+        <div id="dialogue-continue">[E] CONTINUAR · MANTÉN [E] PARA ADELANTAR</div>
+      </div>
+    </div>
+
+    <!-- ===== MENÚ PRINCIPAL ===== -->
+    <div id="menu" class="screen">
+      <div class="title-block">
+        <h1>EL CAIMÁN<br>CIENAGUERO</h1>
+        <h2>La Noche de Tomasita</h2>
+      </div>
+      <div class="menu-buttons">
+        <button class="btn main" data-action="continue" id="btn-continue">CONTINUAR</button>
+        <button class="btn main" data-action="play" id="btn-play">JUGAR</button>
+        <div class="menu-grid">
+          <button class="btn" data-action="instructions">INSTRUCCIONES</button>
+          <button class="btn" data-action="album">ÁLBUM DE CIÉNAGA</button>
+          <button class="btn" data-action="quiz">¿CUÁNTO SABES?</button>
+          <button class="btn" data-action="options">OPCIONES</button>
+          <button class="btn" data-action="credits">CRÉDITOS</button>
+          <button class="btn" data-action="exit">SALIR</button>
+        </div>
+      </div>
+      <p class="disclaimer">Adaptación libre de la tradición oral de Ciénaga, Magdalena (Colombia)</p>
+    </div>
+
+    <!-- ===== INSTRUCCIONES ===== -->
+    <div id="instructions" class="screen overlay hidden">
+      <div class="panel big-panel">
+        <h3>INSTRUCCIONES</h3>
+        <div class="cols">
+          <div>
+            <h4>CONTROLES</h4>
+            <ul>
+              <li><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> / Flechas: moverse · <span class="key">SHIFT</span> correr</li>
+              <li><span class="key">E</span> interactuar (mantén E para adelantar) · <span class="key">Q</span> mapa</li>
+              <li><span class="key">ESC</span> pausar · <span class="key">M</span> silenciar · Táctil: cruceta y botón E</li>
+              <li>La partida se guarda sola (<b>CONTINUAR</b>) · Dificultad en <b>OPCIONES</b></li>
+            </ul>
+            <h4>OBJETIVO</h4>
+            <p>Acompaña a Mateo en un viaje al pasado de Ciénaga. Habla con sus habitantes, encuentra las pistas, cruza el Puerto Cachimbero y descubre la historia de Tomasita. La <b>flecha dorada</b> te señala la siguiente meta.</p>
+            <h4>ÁLBUM DE CIÉNAGA</h4>
+            <p>Las pistas, las figuritas y los momentos de la historia desbloquean tarjetas con datos reales de Ciénaga y su tradición. Míralas en el menú o en la pausa.</p>
+          </div>
+          <div>
+            <h4>PUNTUACIÓN</h4>
+            <ul>
+              <li>Hablar con un habitante: <b>+10</b></li>
+              <li>Encontrar una pista: <b>+20</b></li>
+              <li>Recoger una figurita: <b>+15</b></li>
+              <li>Completar una misión: <b>+50</b></li>
+              <li>Terminar la historia: <b>+100</b></li>
+            </ul>
+            <h4>PELIGROS</h4>
+            <p>Tienes <span class="heart">♥♥♥</span>. El agua y el caimán quitan una vida. <b>Burbujas</b> y un latido: el caimán está cerca. Escóndete en los juncos, no corras y busca las antorchas.</p>
+            <h4>RETOS</h4>
+            <p>Tambor alegre, versos que riman, pasos de cumbia y la búsqueda en canoa. ¡Hay un <b>final secreto</b> si lo completas todo!</p>
+          </div>
+        </div>
+        <p class="note">Mateo, su abuelo y el viaje al pasado son ficticios: el juego es una adaptación de la tradición oral, no una reconstrucción histórica exacta.</p>
+        <button class="btn" data-action="back">VOLVER</button>
+      </div>
+    </div>
+
+    <!-- ===== PAUSA ===== -->
+    <div id="pause" class="screen overlay hidden">
+      <div class="panel big-panel small">
+        <h3>PAUSA</h3>
+        <button class="btn" data-action="resume">CONTINUAR</button>
+        <button class="btn" data-action="album">ÁLBUM DE CIÉNAGA</button>
+        <button class="btn" data-action="options">OPCIONES</button>
+        <button class="btn" data-action="mute" id="btn-mute">SONIDO: SÍ</button>
+        <button class="btn" data-action="restart-scene">REINICIAR ESCENA</button>
+        <button class="btn" data-action="menu">MENÚ PRINCIPAL</button>
+      </div>
+    </div>
+
+    <!-- ===== OPCIONES ===== -->
+    <div id="options" class="screen overlay hidden">
+      <div class="panel big-panel options-panel">
+        <h3>OPCIONES</h3>
+        <button class="btn opt" data-opt="difficulty"><span>DIFICULTAD</span><b></b></button>
+        <button class="btn opt" data-opt="music"><span>MÚSICA</span><b></b></button>
+        <button class="btn opt" data-opt="sfx"><span>EFECTOS DE SONIDO</span><b></b></button>
+        <button class="btn opt" data-opt="text"><span>VELOCIDAD DEL TEXTO</span><b></b></button>
+        <button class="btn opt" data-opt="gfx"><span>GRÁFICOS</span><b></b></button>
+        <button class="btn opt" data-opt="effects"><span>TEMBLOR Y DESTELLOS</span><b></b></button>
+        <button class="btn opt" data-opt="arrow"><span>FLECHA DE OBJETIVO</span><b></b></button>
+        <p class="hint" id="diff-hint"></p>
+        <p class="hint">◀ ▶ para cambiar · E o clic para avanzar</p>
+        <button class="btn" data-action="options-back">VOLVER</button>
+      </div>
+    </div>
+
+    <!-- ===== QUIZ ===== -->
+    <div id="quiz" class="screen overlay hidden">
+      <div class="panel big-panel quiz-panel">
+        <h3>¿CUÁNTO SABES DE CIÉNAGA?</h3>
+        <p class="quiz-progress" id="quiz-progress"></p>
+        <p class="quiz-q" id="quiz-q"></p>
+        <div class="quiz-opts" id="quiz-opts"></div>
+        <p class="quiz-fb" id="quiz-fb"></p>
+        <div class="quiz-actions">
+          <button class="btn" data-action="quiz-next" id="quiz-next">SIGUIENTE</button>
+          <button class="btn" data-action="quiz-back">VOLVER</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CRÉDITOS ===== -->
+    <div id="credits" class="screen overlay hidden">
+      <div class="panel big-panel credits-panel">
+        <h3>CRÉDITOS</h3>
+        <p class="quote">El Caimán Cienaguero: La Noche de Tomasita</p>
+        <div class="cols">
+          <div>
+            <h4>EL JUEGO</h4>
+            <p>Proyecto académico de Desarrollo Web (2026-2), hecho con HTML5, CSS3, JavaScript y Canvas, con PixiJS, pixi-filters y GSAP para los efectos.</p>
+            <h4>LA HISTORIA</h4>
+            <p>Adaptación libre de la tradición oral de Ciénaga, Magdalena (Colombia). Mateo, su abuelo y el viaje al pasado son ficticios; Tomasita, Juanita, el 20 de enero y la danza del caimán vienen de la tradición.</p>
+            <h4>MÚSICA Y SONIDO</h4>
+            <p>Cumbia cienaguera original, compuesta para el juego y sintetizada en el navegador (Web Audio API).</p>
+            <p>En la fiesta suena «Música Danza El Caimán Cienaguero» (video del canal DANZAS FOLCLÓRICAS DE COLOMBIA en YouTube). Los derechos son de sus autores; se usa con fines educativos y sin ánimo de lucro.</p>
+            <h4>GRÁFICOS Y LETRAS</h4>
+            <p>Personajes y escenarios dibujados por código. Tipografías Fredoka y Nunito (Google Fonts, licencia SIL Open Font).</p>
+          </div>
+          <div>
+            <h4>FOTOS DEL ÁLBUM (WIKIMEDIA COMMONS)</h4>
+            <ul id="credits-photos"></ul>
+          </div>
+        </div>
+        <p class="note">Dedicado a quienes siguen contando la historia de Tomasita, para que no se pierda.</p>
+        <button class="btn" data-action="back">VOLVER</button>
+      </div>
+    </div>
+
+    <!-- ===== GAME OVER ===== -->
+    <div id="gameover" class="screen overlay hidden">
+      <div class="panel big-panel small">
+        <h3 class="danger">GAME OVER</h3>
+        <p>El agua del puerto guarda sus secretos...</p>
+        <p>PUNTOS: <span id="go-score">0</span></p>
+        <button class="btn" data-action="retry">REINTENTAR</button>
+        <button class="btn" data-action="menu">MENÚ PRINCIPAL</button>
+      </div>
+    </div>
+
+    <!-- ===== VICTORIA ===== -->
+    <div id="victory" class="screen overlay hidden">
+      <div class="panel big-panel">
+        <h3 class="gold">¡HISTORIA COMPLETADA!</h3>
+        <p class="quote">“Hay historias que no deben desaparecer.”</p>
+        <div class="stats">
+          <div>PUNTUACIÓN FINAL<b id="v-score">0</b></div>
+          <div>PISTAS<b id="v-clues">0/3</b></div>
+          <div>FIGURITAS<b id="v-figs">0/6</b></div>
+          <div>VIDAS<b id="v-lives">3</b></div>
+          <div>ÁLBUM<b id="v-album">0/12</b></div>
+        </div>
+        <p id="v-secret" class="secret"></p>
+        <p class="note">Cada enero, en el Festival del Caimán Cienaguero, Ciénaga recuerda a Tomasita con música, baile, versos y caimanes. Así la tradición oral sigue viva de generación en generación.</p>
+        <button class="btn" data-action="quiz">¿CUÁNTO APRENDISTE?</button>
+        <button class="btn" data-action="play">JUGAR DE NUEVO</button>
+        <button class="btn" data-action="album">ÁLBUM DE CIÉNAGA</button>
+        <button class="btn" data-action="menu">MENÚ PRINCIPAL</button>
+      </div>
+    </div>
+
+    <!-- ===== ÁLBUM DE CIÉNAGA ===== -->
+    <div id="album" class="screen overlay hidden">
+      <div class="panel big-panel album-panel">
+        <h3>ÁLBUM DE CIÉNAGA <span id="album-count" class="album-count">0/12</span></h3>
+        <div class="album-layout">
+          <div id="album-grid"></div>
+          <div class="album-detail">
+            <div class="album-media">
+              <canvas id="album-icon" width="320" height="240"></canvas>
+              <img id="album-photo" class="hidden" alt="">
+            </div>
+            <p id="album-credit" class="hidden"></p>
+            <h4 id="album-title"></h4>
+            <p id="album-text"></p>
+          </div>
+        </div>
+        <p class="note">Datos tomados de fuentes de divulgación (EcuRed, Radio Nacional, Colombia Travel, El Heraldo, Semana). Fotos: Wikimedia Commons, con licencias libres. La leyenda de Tomasita es tradición oral y tiene varias versiones.</p>
+        <button class="btn" data-action="album-back">VOLVER</button>
+      </div>
+    </div>
+
+    <!-- ===== SALIR ===== -->
+    <div id="exit-screen" class="screen overlay hidden">
+      <div class="panel big-panel small">
+        <h3 class="gold">¡GRACIAS POR JUGAR!</h3>
+        <p>Ya puedes cerrar esta pestaña del navegador.</p>
+        <button class="btn" data-action="back">VOLVER AL MENÚ</button>
+      </div>
+    </div>
+
+    <!-- ===== CONTROLES TÁCTILES ===== -->
+    <div id="touch-controls" class="hidden">
+      <div class="dpad">
+        <button data-dir="up" class="t-up">▲</button>
+        <button data-dir="left" class="t-left">◀</button>
+        <button data-dir="right" class="t-right">▶</button>
+        <button data-dir="down" class="t-down">▼</button>
+      </div>
+      <button id="t-run" class="t-run">CORRER</button>
+      <button id="t-action" class="t-action">E</button>
+    </div>
+  </div>
+
+  <!-- Orden de carga: utilidades -> sistemas -> entidades -> escenas -> juego -->
+  <script src="js/lib/pixi.min.js"></script>
+  <script src="js/lib/pixi-filters.js"></script>
+  <script src="js/lib/gsap.min.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/cancion.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/dialogue.js"></script>
+  <script src="js/missions.js"></script>
+  <script src="js/objects.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/fauna.js"></script>
+  <script src="js/npc.js"></script>
+  <script src="js/caiman.js"></script>
+  <script src="js/plaza.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/album.js"></script>
+  <script src="js/rhythm.js"></script>
+  <script src="js/verses.js"></script>
+  <script src="js/dance.js"></script>
+  <script src="js/canoe.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
