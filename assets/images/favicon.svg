@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Ícono del juego: cabeza de caimán sobre un atardecer de la Ciénaga -->
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffcf4a"/>
+      <stop offset="1" stop-color="#f0702c"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="31" fill="url(#cielo)"/>
+  <path d="M1 44h62a31 31 0 0 1-62 0z" fill="#1d6f8c"/>
+  <!-- mandíbula de abajo -->
+  <path d="M8 40c10 3 30 4 46 1l4 3c-14 6-36 6-50 1z" fill="#2c7a2c"/>
+  <!-- dientes -->
+  <path d="M16 40l2 4 2-4zM24 41l2 4 2-4zM32 41l2 4 2-4zM40 41l2 4 2-4zM48 40l2 4 2-4z" fill="#fff"/>
+  <!-- cabeza y hocico -->
+  <path d="M6 38c2-5 10-7 22-8 6-6 14-9 22-8 6 1 9 6 9 12 0 3-1 5-3 6-16 2-36 2-50-2z" fill="#3f9b3a"/>
+  <path d="M6 38c14 3 34 4 50 2" stroke="#1f5a1f" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- escamas -->
+  <path d="M34 25l3-4 3 4zM42 23l3-4 3 4zM50 24l3-4 2 5z" fill="#2c7a2c"/>
+  <!-- fosa nasal y ojo -->
+  <circle cx="9" cy="35" r="1.6" fill="#1f5a1f"/>
+  <circle cx="44" cy="28" r="5" fill="#ffe066"/>
+  <ellipse cx="45" cy="28" rx="1.6" ry="3.6" fill="#1a1a1a"/>
+</svg>
