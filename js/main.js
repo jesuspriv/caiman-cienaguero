@@ -8,12 +8,15 @@
   const container = document.getElementById('game-container');
   let game = null;
 
+  const IS_TOUCH_UI = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
   /* ---------- Escalado manteniendo 16:9 ---------- */
   function resize() {
     const s = Math.min(window.innerWidth / 960, window.innerHeight / 540);
     container.style.width = Math.floor(960 * s) + 'px';
     container.style.height = Math.floor(540 * s) + 'px';
     container.style.setProperty('--u', s.toFixed(4));
+    container.classList.toggle('compact', s < 0.85);
+    container.classList.toggle('touch', IS_TOUCH_UI);
     if (game) game.setRenderScale(renderScale(s));
   }
   // resolución interna según el tamaño real en pantalla (máx. 2.5x)
@@ -115,7 +118,11 @@
     game.draw();
     if (typeof FX !== 'undefined') FX.render(dt);
     Cancion.update(game, dt);
-    if (isTouch) touch.classList.toggle('hidden', game.state !== 'playing');
+    if (isTouch) {
+      const mg = game.minigame;
+      touch.classList.toggle('hidden', game.state !== 'playing' || game.dialogue.active || game.transitioning || !!game.chapter || game.mapOpen || !!(mg && mg.touchHide === 'all'));
+      touch.classList.toggle('only-action', !!(mg && mg.touchHide === 'pad'));
+    }
     requestAnimationFrame(loop);
   }
 

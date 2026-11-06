@@ -161,3 +161,6 @@ class DrumGame {
     }
   }
 }
+
+// en celular: solo hace falta el botón E para golpear el tambor
+DrumGame.prototype.touchHide = 'pad';

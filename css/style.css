@@ -727,3 +727,38 @@ body {
 #load-start { margin: calc(var(--u) * 4px) 0 0; font-family: 'Fredoka', sans-serif; font-size: calc(var(--u) * 16px); color: var(--amarillo); animation: blink 1s steps(2) infinite; }
 #pause .big-panel .btn { margin-top: calc(var(--u) * 4px); margin-bottom: calc(var(--u) * 4px); padding-top: calc(var(--u) * 7px); padding-bottom: calc(var(--u) * 7px); }
 #pause .big-panel h3 { margin-bottom: calc(var(--u) * 6px); }
+
+/* ---------- Celulares ---------- */
+#rotate { display: none; }
+@media (orientation: portrait) and (hover: none) and (pointer: coarse) {
+  #rotate {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    background: radial-gradient(ellipse at 50% 40%, #1d2a5a, #070b1c 75%);
+    color: #fdf6e3; text-align: center; padding: 24px;
+    font-family: 'Fredoka', sans-serif;
+  }
+  #rotate .rot-phone { font-size: 64px; animation: rotPhone 1.8s ease-in-out infinite; }
+  #rotate p { font-size: 24px; color: #f6c945; margin: 0; }
+  #rotate small { font-family: 'Nunito', sans-serif; font-size: 15px; opacity: 0.85; }
+}
+@keyframes rotPhone { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+
+/* pantallas pequeñas: textos y botones un poco más grandes para leer y tocar */
+.compact #hud { font-size: calc(var(--u) * 15.5px); }
+.compact #dialogue-text { font-size: calc(var(--u) * 21px); line-height: 1.32; }
+.compact #dialogue-name { font-size: calc(var(--u) * 18px); margin-bottom: calc(var(--u) * 4px); }
+.compact #dialogue-gloss { font-size: calc(var(--u) * 14.5px); }
+.compact #dialogue-continue { font-size: calc(var(--u) * 13.5px); }
+.compact #menu .menu-grid .btn { font-size: calc(var(--u) * 15.5px); padding: calc(var(--u) * 10px) calc(var(--u) * 8px); }
+.compact #menu .btn.main { font-size: calc(var(--u) * 24px); }
+.compact .big-panel > .btn { font-size: calc(var(--u) * 15.5px); }
+.compact .big-panel .logros-info { min-height: calc(var(--u) * 36px); }
+.compact .toast { font-size: calc(var(--u) * 15px); }
+/* controles táctiles más grandes en celular */
+.touch .dpad { width: calc(var(--u) * 176px); height: calc(var(--u) * 176px); left: calc(var(--u) * 14px); bottom: calc(var(--u) * 14px); }
+.touch #touch-controls button { font-size: calc(var(--u) * 22px); }
+.touch .t-action { width: calc(var(--u) * 92px); height: calc(var(--u) * 92px); right: calc(var(--u) * 22px); bottom: calc(var(--u) * 62px); font-size: calc(var(--u) * 28px) !important; }
+.touch .t-run { right: calc(var(--u) * 126px); bottom: calc(var(--u) * 24px); width: calc(var(--u) * 92px); height: calc(var(--u) * 46px); }
+.compact .big-panel { max-height: 97%; }
+#touch-controls.only-action .dpad, #touch-controls.only-action .t-run { display: none; }

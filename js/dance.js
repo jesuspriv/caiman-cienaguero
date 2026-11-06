@@ -155,3 +155,6 @@ class DanceGame {
     ctx.restore();
   }
 }
+
+// en celular: los pasos se tocan en la pantalla, sin la cruceta encima
+DanceGame.prototype.touchHide = 'all';

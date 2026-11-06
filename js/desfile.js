@@ -280,3 +280,6 @@ class ParadeGame {
     ctx.restore();
   }
 }
+
+// en celular: el desfile se juega tocando la pantalla, sin la cruceta encima
+ParadeGame.prototype.touchHide = 'all';

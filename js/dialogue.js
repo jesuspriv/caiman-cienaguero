@@ -47,6 +47,7 @@ class DialogueSystem {
     this.nameEl = document.getElementById('dialogue-name');
     this.textEl = document.getElementById('dialogue-text');
     this.contEl = document.getElementById('dialogue-continue');
+    if (typeof IS_TOUCH !== 'undefined' && IS_TOUCH) this.contEl.textContent = 'TOCA AQUÍ PARA CONTINUAR · MANTÉN [E] PARA ADELANTAR';
     this.portrait = document.getElementById('portrait');
     this.glossEl = document.getElementById('dialogue-gloss');
     this.words = [];

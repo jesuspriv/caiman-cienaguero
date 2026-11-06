@@ -107,6 +107,17 @@ Objetivo de esta ronda: que niños y jóvenes que no conocen la historia del Cai
 32. **Pantalla de carga** (`js/carga.js`): un caimán desfilando, barra de progreso y un dato real de Ciénaga cada pocos segundos mientras cargan las letras, los efectos gráficos y la canción. Al terminar pide tocar la pantalla o una tecla, lo que también desbloquea el sonido del navegador.
 33. El menú principal ahora tiene 4 columnas para que quepa el botón nuevo, y la pausa es un poco más compacta.
 
+## Celular y GIF
+
+34. **Probado en tamaño de celular** (Android acostado, 740×360) y corregido:
+    - La cruceta y los botones táctiles tapaban el cuadro de diálogo: ahora se ocultan durante los diálogos, las transiciones, las tarjetas de capítulo y el mapa.
+    - En el desfile, la cruceta tapaba a Mateo en el carril de abajo: en el desfile, el baile y los versos se juega tocando la pantalla, y en el tambor solo queda el botón E.
+    - En pantallas pequeñas, los textos del HUD, los diálogos, los avisos y los botones del menú son más grandes, y la cruceta y el botón E también.
+    - En celular, el diálogo dice «TOCA AQUÍ PARA CONTINUAR» y la pantalla de carga dice «Toca la pantalla para empezar».
+    - Al tocar para empezar, el juego pide pantalla completa y orientación horizontal (en Android; en iPhone el navegador no lo permite).
+    - Con el celular vertical aparece un aviso: «Gira tu celular para jugar».
+35. **GIF del juego en el README** (`docs/demo.gif`): el menú, la Plaza del Centenario, la fritanguera con las palabras costeñas, la Casa del Diablo y la estación, el puerto de noche, el Desfile del Caimán, el álbum y las medallas. Se grabó con el juego real, con los efectos WebGL.
+
 ## Probado
 
 - Un recorrido automatizado completo en dificultad FÁCIL, de la casa a la victoria, pasando por Tomasita, las pistas, el puerto, la canoa, la fiesta, el Festival de hoy y la victoria.

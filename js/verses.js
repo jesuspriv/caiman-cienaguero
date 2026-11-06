@@ -180,3 +180,6 @@ class VerseGame {
     ctx.restore();
   }
 }
+
+// en celular: las opciones se tocan en la pantalla
+VerseGame.prototype.touchHide = 'all';

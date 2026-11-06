@@ -6,12 +6,17 @@ Está inspirado en la tradición oral del Caimán Cienaguero de Ciénaga, Magdal
 > Mateo, su abuelo y el viaje al pasado son personajes y situaciones ficticias. El juego es una
 > adaptación libre de la tradición oral, no una reconstrucción histórica exacta.
 
+![El Caimán Cienaguero: el menú, la Plaza del Centenario, la fritanguera, la Casa del Diablo, el puerto de noche, el Desfile del Caimán, el álbum y las medallas](docs/demo.gif)
+
+**Jugar en línea:** https://jesuspriv.github.io/caiman-cienaguero/ (si GitHub Pages está activado).
+
 ## Cómo ejecutarlo
 
 - Abre `index.html` con doble clic en cualquier navegador moderno (Chrome, Edge o Firefox).
 - No hace falta instalar nada ni usar un servidor. Los scripts son clásicos, no módulos, así que funcionan desde `file://`.
 - PixiJS, pixi-filters y GSAP vienen incluidas en `js/lib/`, así que no necesitan internet. Si el navegador no tiene WebGL, el juego se ve con los gráficos clásicos.
 - En la fiesta suena la música de la danza del Caimán Cienaguero desde `audio/danza-caiman.mp3`. Si ese archivo no está, se usa el video de YouTube (necesita internet y un servidor como Live Server), y si tampoco, la cumbia original del juego.
+- **En celular**: se juega con el teléfono acostado (si está vertical, el juego pide girarlo). Al tocar la pantalla de carga se pone en pantalla completa. Hay cruceta, botón E y botón CORRER; se ocultan durante los diálogos, y en el desfile, el baile y los versos se juega tocando la pantalla.
 - Las fuentes (Fredoka y Nunito) se cargan desde Google Fonts. Sin internet, el juego funciona igual con una fuente de respaldo.
 
 ## Controles

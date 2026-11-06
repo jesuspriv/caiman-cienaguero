@@ -34,6 +34,8 @@ const Carga = (() => {
 
   function setFact() { factEl.textContent = DATOS_CARGA[fi % DATOS_CARGA.length]; fi++; }
   setFact();
+  const touchUI = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  if (touchUI) startEl.textContent = 'Toca la pantalla para empezar';
 
   function art() {
     const W = cv.width, H = cv.height;
@@ -70,6 +72,12 @@ const Carga = (() => {
     if (e) { e.preventDefault(); e.stopImmediatePropagation(); }
     gone = true;
     if (typeof AudioFX !== 'undefined') AudioFX.init();
+    // en celulares: pantalla completa y horizontal, para que el juego se vea grande
+    if (touchUI && document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen({ navigationUI: 'hide' })
+        .then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape').catch(() => {}))
+        .catch(() => {});
+    }
     el.classList.add('fade');
     setTimeout(() => { el.remove(); }, 600);
     if (onGo) onGo();
