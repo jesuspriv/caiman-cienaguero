@@ -19,7 +19,7 @@ class UI {
     this.notifEl = this.$('notifications');
     this.bannerEl = this.$('mission-banner');
     this.bigEl = this.$('big-text');
-    this.screens = ['menu', 'instructions', 'pause', 'gameover', 'victory', 'exit-screen', 'album', 'options', 'quiz', 'credits'].map(id => this.$(id));
+    this.screens = ['menu', 'instructions', 'pause', 'gameover', 'victory', 'exit-screen', 'album', 'options', 'quiz', 'credits', 'logros'].map(id => this.$(id));
     this.focusIndex = 0;
     this.current = null;
     this.albumReturn = 'menu';
@@ -64,6 +64,8 @@ class UI {
       case 'menu': g.toMenu(); break;
       case 'album': this.openAlbum(); break;
       case 'album-back': this.showScreen(this.albumReturn); break;
+      case 'logros': this.openLogros(); break;
+      case 'logros-back': this.showScreen(this.logrosReturn || 'menu'); break;
       case 'options': this.optionsReturn = this.current || 'menu'; this.renderOptions(); this.showScreen('options'); break;
       case 'options-back': this.showScreen(this.optionsReturn || 'menu'); break;
     }
@@ -126,6 +128,7 @@ class UI {
     this.focusIndex = (i + list.length) % list.length;
     list[this.focusIndex].classList.add('focused');
     if (list[this.focusIndex].dataset.card) this.showCard(list[this.focusIndex].dataset.card);
+    if (list[this.focusIndex].dataset.disfraz) this.showDisfraz(list[this.focusIndex].dataset.disfraz);
   }
   /** Navegación de menús con teclado. Devuelve true si consumió la tecla. */
   handleMenuKey(code) {
@@ -137,8 +140,8 @@ class UI {
     }
     if (this.current === 'menu' && (code === 'ArrowLeft' || code === 'KeyA')) { this.setFocus(this.focusIndex - 1); AudioFX.sfx.blip(); return true; }
     if (this.current === 'menu' && (code === 'ArrowRight' || code === 'KeyD')) { this.setFocus(this.focusIndex + 1); AudioFX.sfx.blip(); return true; }
-    if (this.current === 'album' && (code === 'ArrowLeft' || code === 'KeyA')) { this.setFocus(this.focusIndex - 1); AudioFX.sfx.blip(); return true; }
-    if (this.current === 'album' && (code === 'ArrowRight' || code === 'KeyD')) { this.setFocus(this.focusIndex + 1); AudioFX.sfx.blip(); return true; }
+    if ((this.current === 'album' || this.current === 'logros') && (code === 'ArrowLeft' || code === 'KeyA')) { this.setFocus(this.focusIndex - 1); AudioFX.sfx.blip(); return true; }
+    if ((this.current === 'album' || this.current === 'logros') && (code === 'ArrowRight' || code === 'KeyD')) { this.setFocus(this.focusIndex + 1); AudioFX.sfx.blip(); return true; }
     if (code === 'ArrowUp' || code === 'KeyW') { this.setFocus(this.focusIndex - 1); AudioFX.sfx.blip(); return true; }
     if (code === 'ArrowDown' || code === 'KeyS') { this.setFocus(this.focusIndex + 1); AudioFX.sfx.blip(); return true; }
     if (code === 'Enter' || code === 'Space' || code === 'KeyE') { list[this.focusIndex].click(); return true; }
@@ -210,6 +213,60 @@ class UI {
     const list = this.visibleButtons(), i = list.findIndex(b => b.dataset.card);
     if (i >= 0) this.setFocus(i);
   }
+  /* ---------- Medallas y disfraces ---------- */
+  openLogros() {
+    this.logrosReturn = this.current || 'menu';
+    this.$('logros-count').textContent = `${Logros.count}/${LOGROS.length}`;
+    const med = this.$('medallas'), info = this.$('medalla-info');
+    med.innerHTML = '';
+    LOGROS.forEach(l => {
+      const d = document.createElement('div'), ok = Logros.has(l.id);
+      d.className = 'medalla' + (ok ? ' ganada' : '');
+      d.innerHTML = `<span class="m-icon"></span><span class="m-name"></span>`;
+      d.querySelector('.m-icon').textContent = ok ? l.icon : '🔒';
+      d.querySelector('.m-name').textContent = l.title;
+      const show = () => {
+        const dz = DISFRACES.find(x => x.logro === l.id);
+        info.textContent = `${ok ? '🏅 ¡Ganada! ' : '🔒 '}${l.title}: ${l.desc}${dz ? ' Premio: disfraz «' + dz.name + '».' : ''}`;
+      };
+      d.addEventListener('mouseenter', show); d.addEventListener('click', show);
+      med.appendChild(d);
+    });
+    info.textContent = 'Pasa el ratón (o toca) una medalla para ver cómo se gana.';
+    const dis = this.$('disfraces');
+    dis.innerHTML = '';
+    DISFRACES.forEach(dz => {
+      const b = document.createElement('button'), ok = Logros.disponible(dz);
+      b.className = 'btn disfraz' + (ok ? '' : ' locked') + (Logros.disfraz === dz.id ? ' elegido' : '');
+      b.dataset.disfraz = dz.id;
+      const cv = document.createElement('canvas'); cv.width = 72; cv.height = 92;
+      const cx = cv.getContext('2d');
+      if (!ok) cx.filter = 'grayscale(1) brightness(0.45)';
+      drawHumanoid(cx, 36, 86, dz.look, 'down', 0, false, 3.2, ok ? 'happy' : null);
+      const n = document.createElement('span'); n.textContent = ok ? dz.name : '???';
+      b.append(cv, n);
+      b.addEventListener('click', () => {
+        AudioFX.init();
+        if (!Logros.elegir(dz.id)) { AudioFX.sfx.wrong(); return; }
+        AudioFX.sfx.select();
+        dis.querySelectorAll('.disfraz').forEach(x => x.classList.toggle('elegido', x === b));
+        this.showDisfraz(dz.id);
+      });
+      b.addEventListener('mouseenter', () => { const list = this.visibleButtons(); this.setFocus(list.indexOf(b)); });
+      dis.appendChild(b);
+    });
+    this.showScreen('logros');
+    const list = this.visibleButtons(), i = list.findIndex(b => b.dataset.disfraz === Logros.disfraz);
+    if (i >= 0) this.setFocus(i);
+  }
+  showDisfraz(id) {
+    const dz = DISFRACES.find(x => x.id === id), ok = Logros.disponible(dz);
+    const l = dz.logro && LOGROS.find(x => x.id === dz.logro);
+    this.$('disfraz-info').textContent = ok
+      ? `${dz.name}${Logros.disfraz === id ? ' (puesto)' : ' · Presiona E o haz clic para ponértelo'}: ${dz.desc}`
+      : `🔒 Gana la medalla «${l.title}» para desbloquearlo: ${l.desc}`;
+  }
+
   showCard(id) {
     const album = this.game.album, c = album.card(id), open = album.has(id);
     const cv = this.$('album-icon'), ctx = cv.getContext('2d');

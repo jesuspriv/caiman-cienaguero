@@ -39,6 +39,7 @@
 
     if (game.state !== 'playing') {
       if (code === 'Escape' && game.ui.current === 'album') { game.ui.action('album-back'); return; }
+      if (code === 'Escape' && game.ui.current === 'logros') { game.ui.action('logros-back'); return; }
       if (code === 'Escape' && game.ui.current === 'options') { game.ui.action('options-back'); return; }
       if (code === 'Escape' && game.ui.current === 'quiz') { game.ui.action('quiz-back'); return; }
       if (code === 'Escape' && (game.ui.current === 'credits' || game.ui.current === 'instructions')) { game.ui.action('back'); return; }
@@ -123,15 +124,36 @@
     game = new Game();
     Settings.apply();
     window.game = game; // útil para depurar desde la consola
-    if (typeof FX !== 'undefined') FX.init(game);
+    const fxReady = typeof FX !== 'undefined' ? FX.init(game) : Promise.resolve();
+    Logros.init(game);
     resize();
     setupTouch();
     game.ui.showScreen('menu');
     requestAnimationFrame(t => { last = t; loop(t); });
+    return fxReady;
+  }
+
+  /* ---------- Carga: letras, efectos y la canción de la fiesta ---------- */
+  const timeout = ms => new Promise(r => setTimeout(r, ms));
+  function preloadSong() {
+    return new Promise(resolve => {
+      const a = new Audio();
+      a.preload = 'auto';
+      a.addEventListener('canplaythrough', resolve, { once: true });
+      a.addEventListener('error', resolve, { once: true });
+      a.src = 'audio/danza-caiman.mp3';
+      a.load();
+    });
   }
 
   const fontsReady = document.fonts
     ? Promise.all([document.fonts.load('10px "Fredoka"'), document.fonts.load('20px "Nunito"')]).catch(() => {})
     : Promise.resolve();
-  Promise.race([fontsReady, new Promise(r => setTimeout(r, 1500))]).then(start);
+  Carga.step(0.12, 'Preparando las letras…');
+  Promise.race([fontsReady, timeout(1500)])
+    .then(() => { Carga.step(0.4, 'Pintando las calles de Ciénaga…'); return { fx: start() }; })
+    .then(o => Promise.race([o.fx, timeout(3000)]))
+    .catch(() => {})
+    .then(() => { Carga.step(0.7, 'Afinando los tambores…'); return Promise.race([preloadSong(), timeout(5000)]); })
+    .then(() => Carga.done(() => { if (game && game.ui.current === 'menu') game.ui.animateIn(document.getElementById('menu')); }));
 })();

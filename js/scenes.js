@@ -1764,7 +1764,13 @@ class FiestaScene extends BaseScene {
       if (dist(p.x, p.y, n.x, n.y) < 60) { n.moving = false; n.faceTowards(p.x, p.y); return; }
       n.x += dx / d * 35 * dt; n.y += dy / d * 35 * dt; n.dir = dirTowards(dx, dy); n.moving = true;
     };
-    this.npcs.push(new NPC({ id: 'portador', who: 'portador', x: 1000, y: 620, prop: 'caiman', solid: false, behavior: wander, lines: [{ who: 'portador', text: 'Este caimán lo hicimos entre todos los vecinos. Cada año sale a recorrer las calles.' }] }));
+    const portador = new NPC({ id: 'portador', who: 'portador', title: 'el portador del caimán', x: 1000, y: 620, prop: 'caiman', solid: false, behavior: wander, lines: [
+      { who: 'portador', text: 'Este caimán lo hicimos entre todos los vecinos. Cada año sale a recorrer las calles en la Gran Parada de Caimanes.' },
+      { who: 'portador', mood: 'happy', text: '¿Y tú, pelao, te le mides a cargarlo en el desfile? Háblame otra vez cuando estés listo.' }
+    ] });
+    Object.defineProperty(portador, 'label', { get: () => g.flags.talk_portador ? 'Cargar el caimán en el desfile' : 'Hablar' });
+    portador.interact = game => { if (!game.flags.talk_portador) game.talkTo(portador); else this.playParade(portador); };
+    this.npcs.push(portador);
     this.npcs.push(new NPC({ id: 'port2', who: 'portador', lookKey: 'bailador', x: 480, y: 640, prop: 'caiman', solid: false, talkable: false, behavior: wander }));
     this.npcs.push(new NPC({ id: 'nino_fiesta', who: 'nino', x: 1100, y: 450, scale: 1.6, prop: 'caiman', dir: 'down', lines: [{ who: 'nino', text: '¡Mira mi caimán! Lo tallé con mi abuelo.' }, { who: 'nino', text: 'Cuando sea viejito se lo voy a regalar a mi nieto, para que él también cuente la historia.' }] }));
     this.npcs.push(new NPC({ id: 'mujer_fiesta', who: 'mujer', lookKey: 'vendedora', x: 120, y: 370, dir: 'down', talkable: false, solid: false }));
@@ -2056,6 +2062,34 @@ class FiestaScene extends BaseScene {
       await g.say([{ who: 'bailadora', mood: rounds >= 3 ? 'happy' : null, text: rounds === total
         ? '¡Uy, pero qué sabor! Así se baila la cumbia en Ciénaga.'
         : rounds >= 3 ? '¡Bien bailado! Con un poquito más de práctica no te gana nadie.' : 'Los pasos se aprenden bailando, muchacho. ¡Vuelve cuando quieras!' }]);
+    });
+  }
+
+  /** Minijuego: cargar el caimán en la Gran Parada de Caimanes. */
+  playParade(npc) {
+    const g = this.game;
+    g.script(async alive => {
+      const first = !g.flags.paradeDone;
+      npc.faceTowards(g.player.x, g.player.y);
+      await g.say(first ? [
+        { who: 'portador', mood: 'happy', text: '¡Ajá, mi llave! Tú vas adelante con la cabeza del caimán, y yo llevo la cola.' },
+        { who: 'portador', text: 'Cambia de carril con las flechas: esquiva los charcos, el perro dormido y la carretilla de cocos. Y recoge las notas y las flores, que la gente aplaude.' },
+        { who: 'portador', mood: 'happy', text: '¡Hay que llegar hasta el templete! ¿Listo? ¡Que suene la música!' }
+      ] : [{ who: 'portador', mood: 'happy', text: '¡Otra vuelta! El caimán no se cansa de desfilar.' }]);
+      if (!alive()) return;
+      const res = await g.startMinigame(ParadeGame); if (!alive()) return;
+      g.ui.bigText(res.completed ? (res.hits === 0 ? '¡DESFILE PERFECTO!' : '¡REY DEL DESFILE!') : '¡CASI LLEGAS!');
+      const best = g.flags.paradeBest || 0;
+      if (res.completed && !g.flags.paradeDone) {
+        g.flags.paradeDone = true;
+        g.addScore(50 + Math.round(res.points / 4), g.player.x, g.player.y - 60);
+        g.ui.notify(`DESFILE COMPLETADO · ★ ${res.points}`, 'mission');
+      } else if (res.points > best && best) g.ui.notify(`¡NUEVO RÉCORD DEL DESFILE: ★ ${res.points}!`, 'clue');
+      g.flags.paradeBest = Math.max(best, res.points);
+      await g.wait(1.4); if (!alive()) return;
+      await g.say([{ who: 'portador', mood: res.completed ? 'happy' : null, text: res.completed
+        ? '¡Eso es! Así desfilan los caimanes en Ciénaga: con la gente aplaudiendo y la música sonando.'
+        : '¡Casi, pelao! Hasta los caimanes se tropiezan. ¡Háblame y lo intentamos otra vez!' }]);
     });
   }
 

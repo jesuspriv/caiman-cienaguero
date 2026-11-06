@@ -15,6 +15,17 @@
   <div id="game-container">
     <canvas id="game" width="960" height="540"></canvas>
 
+    <!-- ===== PANTALLA DE CARGA ===== -->
+    <div id="loading">
+      <canvas id="loading-art" width="520" height="170"></canvas>
+      <h1>EL CAIMÁN CIENAGUERO</h1>
+      <h2>La Noche de Tomasita</h2>
+      <div class="load-bar"><div id="load-fill"></div></div>
+      <p id="load-status">Cargando…</p>
+      <div class="load-fact"><b>¿SABÍAS QUE...?</b><p id="load-fact"></p></div>
+      <p id="load-start" class="hidden">Toca la pantalla o presiona una tecla para empezar</p>
+    </div>
+
     <!-- ===== HUD ===== -->
     <div id="hud" class="hidden">
       <div class="hud-left panel">
@@ -62,6 +73,7 @@
           <button class="btn" data-action="instructions">INSTRUCCIONES</button>
           <button class="btn" data-action="album">ÁLBUM DE CIÉNAGA</button>
           <button class="btn" data-action="quiz">¿CUÁNTO SABES?</button>
+          <button class="btn" data-action="logros">MEDALLAS Y DISFRACES</button>
           <button class="btn" data-action="options">OPCIONES</button>
           <button class="btn" data-action="credits">CRÉDITOS</button>
           <button class="btn" data-action="exit">SALIR</button>
@@ -114,6 +126,7 @@
         <h3>PAUSA</h3>
         <button class="btn" data-action="resume">CONTINUAR</button>
         <button class="btn" data-action="album">ÁLBUM DE CIÉNAGA</button>
+        <button class="btn" data-action="logros">MEDALLAS Y DISFRACES</button>
         <button class="btn" data-action="options">OPCIONES</button>
         <button class="btn" data-action="mute" id="btn-mute">SONIDO: SÍ</button>
         <button class="btn" data-action="restart-scene">REINICIAR ESCENA</button>
@@ -212,6 +225,26 @@
       </div>
     </div>
 
+    <!-- ===== MEDALLAS Y DISFRACES ===== -->
+    <div id="logros" class="screen overlay hidden">
+      <div class="panel big-panel logros-panel">
+        <h3>MEDALLAS Y DISFRACES <span id="logros-count" class="album-count">0/17</span></h3>
+        <div class="logros-layout">
+          <div>
+            <h4>MEDALLAS</h4>
+            <div id="medallas"></div>
+            <p id="medalla-info" class="logros-info">Pasa el ratón sobre una medalla para ver cómo se gana.</p>
+          </div>
+          <div>
+            <h4>DISFRACES DE MATEO</h4>
+            <div id="disfraces"></div>
+            <p id="disfraz-info" class="logros-info"></p>
+          </div>
+        </div>
+        <button class="btn" data-action="logros-back">VOLVER</button>
+      </div>
+    </div>
+
     <!-- ===== ÁLBUM DE CIÉNAGA ===== -->
     <div id="album" class="screen overlay hidden">
       <div class="panel big-panel album-panel">
@@ -277,15 +310,18 @@
   <script src="js/lugares.js"></script>
   <script src="js/scenes.js"></script>
   <script src="js/album.js"></script>
+  <script src="js/logros.js"></script>
   <script src="js/rhythm.js"></script>
   <script src="js/verses.js"></script>
   <script src="js/dance.js"></script>
+  <script src="js/desfile.js"></script>
   <script src="js/canoe.js"></script>
   <script src="js/map.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/fx.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/carga.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

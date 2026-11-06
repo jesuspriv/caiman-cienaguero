@@ -470,7 +470,41 @@ function drawHumanoid(ctx, x, y, L, dir, t, moving, p = 2, mood = null) {
     ctx.fillStyle = c2;
     if (v) { ctx.fillRect(hx - 4, hy - 4.9, 8, 0.7); ctx.fillRect(hx - 4, hy - 6.4, 8, 0.6); }
     else ctx.fillRect(hx - 4, hy - 4.7, 8, 1.1);
+    if (v && L.hatColors) {   // vueltiao de colores: franjas de colores en la copa
+      L.hatColors.forEach((col, k) => { ctx.fillStyle = col; ctx.fillRect(hx - 4, hy - 4.9 - k * 1.2, 8, 0.75); });
+    }
     ctx.restore();
+    if (v && L.hatColors) {
+      ctx.save(); ctx.lineWidth = 0.55;
+      [[6.2, 1.8], [4.9, 1.35]].forEach(([a, b], k) => { ctx.strokeStyle = L.hatColors[k % L.hatColors.length]; ctx.beginPath(); ctx.ellipse(hx, hy - 3.2, a, b, 0, 0, Math.PI * 2); ctx.stroke(); });
+      ctx.restore();
+    }
+  }
+  /* --- máscara de caimán (disfraz del desfile) --- */
+  if (L.caimanHat) {
+    const G = '#3f9b3a', GD = '#2c6e2a';
+    ctx.beginPath(); ctx.ellipse(hx, hy - 3.2, 5.7, 4.3, 0, Math.PI, 0); ctx.lineTo(hx + 5.7, hy - 2.6); ctx.lineTo(hx - 5.7, hy - 2.6); ctx.closePath();
+    fs(grad(G, hx - 5.7, hx + 5.7));
+    // crestas del lomo
+    ctx.fillStyle = GD;
+    for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.moveTo(hx + k * 1.8 - 0.8, hy - 6.6 + Math.abs(k) * 0.6); ctx.lineTo(hx + k * 1.8, hy - 8.4 + Math.abs(k) * 0.6); ctx.lineTo(hx + k * 1.8 + 0.8, hy - 6.6 + Math.abs(k) * 0.6); ctx.fill(); }
+    const eyeAt = (ex, ey) => {
+      ctx.beginPath(); ctx.arc(ex, ey, 1.25, 0, Math.PI * 2); fs('#f6d64a');
+      ctx.fillStyle = '#1a1a1a'; ctx.fillRect(ex - 0.2, ey - 0.9, 0.4, 1.8);
+    };
+    if (side) {
+      // hocico hacia adelante, con dientes
+      ctx.beginPath(); rrect(ctx, hx + 2, hy - 5.2, 9, 2.8, 1.2); fs(G);
+      ctx.fillStyle = '#fdf6e3'; for (let k = 0; k < 4; k++) { ctx.beginPath(); ctx.moveTo(hx + 4 + k * 1.8, hy - 2.4); ctx.lineTo(hx + 4.8 + k * 1.8, hy - 1.3); ctx.lineTo(hx + 5.6 + k * 1.8, hy - 2.4); ctx.fill(); }
+      ctx.fillStyle = GD; ctx.beginPath(); ctx.arc(hx + 10, hy - 4.6, 0.4, 0, Math.PI * 2); ctx.fill();
+      eyeAt(hx + 2.4, hy - 6.4);
+    } else if (!up) {
+      // hocico que asoma sobre la frente
+      ctx.beginPath(); ctx.ellipse(hx, hy - 2.6, 4.2, 1.7, 0, 0, Math.PI * 2); fs(G);
+      ctx.fillStyle = '#fdf6e3'; for (let k = -3; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(hx + k * 1.1 - 0.45, hy - 1.3); ctx.lineTo(hx + k * 1.1, hy - 0.4); ctx.lineTo(hx + k * 1.1 + 0.45, hy - 1.3); ctx.fill(); }
+      ctx.fillStyle = GD; [-1, 1].forEach(s => { ctx.beginPath(); ctx.arc(hx + s * 1.1, hy - 3.2, 0.4, 0, Math.PI * 2); ctx.fill(); });
+      eyeAt(hx - 2.7, hy - 6); eyeAt(hx + 2.7, hy - 6);
+    }
   }
   if (L.flower) {
     const fx = side ? hx - 1.2 : up ? 3.1 : 3.4, fy = hy - (L.hat ? 6 : 3.4);

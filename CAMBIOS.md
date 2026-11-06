@@ -93,6 +93,20 @@ Objetivo de esta ronda: que niños y jóvenes que no conocen la historia del Cai
 27. **Cuatro preguntas nuevas en el quiz** (banco de 18): el cayeye, la ñapa, el año del tren y la leyenda de la Casa del Diablo.
 28. Los créditos agrupan las fotos por autor para que quepan todas, y las fotos nuevas están guardadas en `assets/images/album/` para que funcionen sin internet.
 
+## Medallas, disfraces, el desfile y la pantalla de carga
+
+29. **17 medallas** (`js/logros.js`), en una pantalla nueva, **MEDALLAS Y DISFRACES**, que se abre desde el menú o la pausa:
+    - Premian explorar (las pistas, las figuritas, los 6 lugares, los 7 sabores, las 12 palabras), jugar bien (cruzar el puerto sin perder vidas, 90 % en el tambor, rimar todos los versos, la última ronda del baile, el desfile, 8/8 en el quiz) y terminar la historia o el final secreto.
+    - Se ganan solas mientras juegas, con un aviso, y se guardan entre partidas.
+30. **Disfraces para Mateo** que se ganan con medallas: cumbiambero (tocar el tambor), pescador (devolver la atarraya), raspadero (probar los 7 sabores), guía con guayabera (ver los 6 lugares), vueltiao de colores (aprender las 12 palabras) y **máscara de caimán** (terminar el desfile). El disfraz se ve en el mundo, en los retratos del diálogo y en los minijuegos.
+31. **Minijuego «El Desfile del Caimán»** (`js/desfile.js`), como la Gran Parada de Caimanes del festival:
+    - En la fiesta y en el Festival de hoy, el portador del caimán te invita a cargarlo.
+    - Mateo lleva la cabeza del caimán y un portador la cola, entre casas de colores, banderines y gente que aplaude.
+    - Se cambia de carril con las flechas (o tocando arriba o abajo) para esquivar charcos, un perro dormido y carretillas de cocos, y se recogen notas, flores de cayena y estrellas.
+    - Hay que llegar al templete (unos 40 segundos). Las vidas y la velocidad dependen de la dificultad, y suena la canción de la danza.
+32. **Pantalla de carga** (`js/carga.js`): un caimán desfilando, barra de progreso y un dato real de Ciénaga cada pocos segundos mientras cargan las letras, los efectos gráficos y la canción. Al terminar pide tocar la pantalla o una tecla, lo que también desbloquea el sonido del navegador.
+33. El menú principal ahora tiene 4 columnas para que quepa el botón nuevo, y la pausa es un poco más compacta.
+
 ## Probado
 
 - Un recorrido automatizado completo en dificultad FÁCIL, de la casa a la victoria, pasando por Tomasita, las pistas, el puerto, la canoa, la fiesta, el Festival de hoy y la victoria.

@@ -233,6 +233,7 @@ class Game {
     this.minigame = null; this.danger = 0;
     this.sceneName = name;
     this.sceneOpts = opts;
+    if (name === 'puerto') this.flags.visitedPuerto = true;
     this.snapshot = JSON.parse(JSON.stringify({
       score: this.score, clues: this.clues, figs: this.figs, flags: this.flags, missions: this.missions.serialize()
     }));
@@ -510,6 +511,7 @@ class Game {
     const p = this.player;
     if (p.invuln > 0 || this.state !== 'playing' || this.lives <= 0) return;
     this.lives--;
+    if (this.sceneName === 'puerto') this.flags.hurtPuerto = true;
     this.ui.updateLives(true);
     p.invuln = 2;
     if (cause === 'caiman') p.knockback(fromX, fromY, 420);
@@ -553,6 +555,7 @@ class Game {
     if (this.state !== 'playing' || !this.scene) return;
     if (this.mapOpen) return;   // el mundo se detiene mientras miras el mapa
     this.autoSaveT = (this.autoSaveT || 0) + dt;
+    if (typeof Logros !== 'undefined') Logros.check(dt);
     if (this.autoSaveT > 15 && !this.locked && !this.transitioning && !this.dialogue.active && !this.minigame) { this.autoSaveT = 0; this.saveGame(); }
     this.hitFlash = Math.max(0, this.hitFlash - dt * 3);
     if (this.hitStop > 0) { this.hitStop -= dt; this.shake = Math.max(0, this.shake - dt * 25); return; }

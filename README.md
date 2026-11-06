@@ -65,6 +65,9 @@ Está inspirado en la tradición oral del Caimán Cienaguero de Ciénaga, Magdal
 - **¿Sabías que...?**: cada título de capítulo muestra un dato real sobre Ciénaga y su tradición.
 - **Dificultad** (en Opciones): FÁCIL (NIÑOS), con agua sin daño, caimán más lento y más tiempo en los retos; NORMAL; y DIFÍCIL.
 - **Tutorial**: consejos en pantalla para caminar, hablar, correr y usar el mapa (con textos distintos en pantallas táctiles).
+- **Medallas y disfraces**: 17 medallas por explorar, aprender y jugar bien (encontrar las pistas, probar los 7 sabores, aprender las 12 palabras, cruzar el puerto sin perder vidas, ritmo perfecto en el tambor, terminar el desfile…). Seis de ellas desbloquean un disfraz para Mateo: cumbiambero, pescador, raspadero, guía con guayabera, vueltiao de colores y máscara de caimán. El disfraz se ve en el pueblo, en los retratos y en los minijuegos. Todo se guarda en el navegador.
+- **El Desfile del Caimán**: en la fiesta, el portador del caimán te invita a cargarlo en la Gran Parada. Cambias de carril con las flechas para esquivar charcos, un perro dormido y carretillas de cocos, y recoges notas y flores de cayena hasta llegar al templete, con la canción de la danza sonando.
+- **Pantalla de carga**: un caimán desfilando, la barra de progreso y datos reales de Ciénaga mientras cargan las letras, los efectos y la canción. Al final pide tocar la pantalla, lo que también permite que suene la música.
 - **Créditos**: pantalla con el proyecto, la historia, la música, las tipografías y los autores y licencias de cada foto del álbum.
 - **Opciones**: volumen de música y de efectos, velocidad del texto (lento, normal, rápido o instantáneo), temblor y destellos (se pueden quitar para mayor comodidad) y flecha de objetivo. Se guardan en el navegador.
 - **HUD**: vidas, puntos, misión actual con su pista, pistas encontradas, figuritas e indicador de interacción.
@@ -132,6 +135,9 @@ caiman-cienaguero/
 │   ├── canoe.js, dance.js, verses.js, map.js, fauna.js, quiz.js  Retos, mapa, fauna y quiz
 │   ├── plaza.js        Plaza del Centenario: templete, iglesia, palacio
 │   ├── lugares.js      Casa del Diablo, Palacio Azul, estación, tren y comida típica
+│   ├── logros.js       Medallas y disfraces de Mateo
+│   ├── desfile.js      Minijuego «El Desfile del Caimán»
+│   ├── carga.js        Pantalla de carga con datos de Ciénaga
 │   ├── fx.js           Capa de efectos WebGL (agua, resplandor, color)
 │   ├── cancion.js      Canción de la danza del Caimán en la fiesta
 │   ├── lib/            PixiJS, pixi-filters y GSAP

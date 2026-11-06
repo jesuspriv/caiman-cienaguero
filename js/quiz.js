@@ -108,6 +108,7 @@ class Quiz {
     if (this.i < this.qs.length) { this.render(); return; }
     // resultado
     const n = this.right, total = this.qs.length;
+    if (n === total && typeof Logros !== 'undefined') Logros.unlock('memoria');
     const record = n > this.best;
     if (record) { this.best = n; try { localStorage.setItem('caiman_quiz_best', n); } catch (e) { /* ignorar */ } }
     const medal = n === total ? '¡GUARDIÁN DE LA MEMORIA DE CIÉNAGA!' : n >= 6 ? '¡CONOCEDOR DE LA TRADICIÓN!' : n >= 4 ? '¡VAS MUY BIEN!' : '¡SIGUE APRENDIENDO!';
