@@ -44,6 +44,7 @@
       <div class="dialogue-body">
         <div id="dialogue-name"></div>
         <div id="dialogue-text"></div>
+        <div id="dialogue-gloss" class="hidden"></div>
         <div id="dialogue-continue">[E] CONTINUAR · MANTÉN [E] PARA ADELANTAR</div>
       </div>
     </div>
@@ -85,7 +86,7 @@
             <h4>OBJETIVO</h4>
             <p>Acompaña a Mateo en un viaje al pasado de Ciénaga. Habla con sus habitantes, encuentra las pistas, cruza el Puerto Cachimbero y descubre la historia de Tomasita. La <b>flecha dorada</b> te señala la siguiente meta.</p>
             <h4>ÁLBUM DE CIÉNAGA</h4>
-            <p>Las pistas, las figuritas y los momentos de la historia desbloquean tarjetas con datos reales de Ciénaga y su tradición. Míralas en el menú o en la pausa.</p>
+            <p>Pistas, figuritas, lugares que miras, comidas que pruebas y palabras costeñas desbloquean tarjetas con datos reales de Ciénaga. Míralas en el menú o en la pausa.</p>
           </div>
           <div>
             <h4>PUNTUACIÓN</h4>
@@ -165,7 +166,7 @@
             <p>Adaptación libre de la tradición oral de Ciénaga, Magdalena (Colombia). Mateo, su abuelo y el viaje al pasado son ficticios; Tomasita, Juanita, el 20 de enero y la danza del caimán vienen de la tradición.</p>
             <h4>MÚSICA Y SONIDO</h4>
             <p>Cumbia cienaguera original, compuesta para el juego y sintetizada en el navegador (Web Audio API).</p>
-            <p>En la fiesta suena «Música Danza El Caimán Cienaguero» (video del canal DANZAS FOLCLÓRICAS DE COLOMBIA en YouTube). Los derechos son de sus autores; se usa con fines educativos y sin ánimo de lucro.</p>
+            <p>En la fiesta: «Música Danza El Caimán Cienaguero», del canal DANZAS FOLCLÓRICAS DE COLOMBIA (YouTube). Uso educativo.</p>
             <h4>GRÁFICOS Y LETRAS</h4>
             <p>Personajes y escenarios dibujados por código. Tipografías Fredoka y Nunito (Google Fonts, licencia SIL Open Font).</p>
           </div>
@@ -216,7 +217,10 @@
       <div class="panel big-panel album-panel">
         <h3>ÁLBUM DE CIÉNAGA <span id="album-count" class="album-count">0/12</span></h3>
         <div class="album-layout">
-          <div id="album-grid"></div>
+          <div class="album-left">
+            <div id="album-tabs"></div>
+            <div id="album-grid"></div>
+          </div>
           <div class="album-detail">
             <div class="album-media">
               <canvas id="album-icon" width="320" height="240"></canvas>
@@ -227,7 +231,7 @@
             <p id="album-text"></p>
           </div>
         </div>
-        <p class="note">Datos tomados de fuentes de divulgación (EcuRed, Radio Nacional, Colombia Travel, El Heraldo, Semana). Fotos: Wikimedia Commons, con licencias libres. La leyenda de Tomasita es tradición oral y tiene varias versiones.</p>
+        <p class="note">Datos tomados de fuentes de divulgación (EcuRed, Radio Nacional, Colombia Travel, El Heraldo, Semana, Wikipedia). Fotos: Wikimedia Commons, con licencias libres. La leyenda de Tomasita es tradición oral y tiene varias versiones.</p>
         <button class="btn" data-action="album-back">VOLVER</button>
       </div>
     </div>
@@ -270,6 +274,7 @@
   <script src="js/npc.js"></script>
   <script src="js/caiman.js"></script>
   <script src="js/plaza.js"></script>
+  <script src="js/lugares.js"></script>
   <script src="js/scenes.js"></script>
   <script src="js/album.js"></script>
   <script src="js/rhythm.js"></script>

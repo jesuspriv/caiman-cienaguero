@@ -61,7 +61,7 @@ Está inspirado en la tradición oral del Caimán Cienaguero de Ciénaga, Magdal
 - **Minijuego de baile** (escena 7): después de hablar con la bailadora, ella muestra pasos de cumbia y Mateo los repite con las flechas; cada ronda suma un paso (5 rondas, 3 vidas, +10 por ronda la primera vez).
 - **Final secreto**: con las 6 figuritas, las 2 misiones secundarias y los retos del verseador y del baile, el abuelo le regala a Mateo la figura de caimán tallada. Desbloquea la tarjeta 13 del álbum, «El regalo del abuelo», y +100.
 - **Guardar partida**: el juego se guarda solo (al empezar cada escena, al completar misiones y cada 15 s de juego libre). En el menú aparece **CONTINUAR** con el capítulo donde ibas. Al terminar la historia, la partida guardada se borra.
-- **¿Cuánto sabes de Ciénaga?**: quiz de 8 preguntas al azar (de 13) con datos reales del juego y del álbum. Después de cada respuesta explica el dato, así también enseña. Guarda tu récord. Está en el menú principal y en la pantalla de victoria.
+- **¿Cuánto sabes de Ciénaga?**: quiz de 8 preguntas al azar (de 18) con datos reales del juego y del álbum. Después de cada respuesta explica el dato, así también enseña. Guarda tu récord. Está en el menú principal y en la pantalla de victoria.
 - **¿Sabías que...?**: cada título de capítulo muestra un dato real sobre Ciénaga y su tradición.
 - **Dificultad** (en Opciones): FÁCIL (NIÑOS), con agua sin daño, caimán más lento y más tiempo en los retos; NORMAL; y DIFÍCIL.
 - **Tutorial**: consejos en pantalla para caminar, hablar, correr y usar el mapa (con textos distintos en pantallas táctiles).
@@ -73,7 +73,7 @@ Está inspirado en la tradición oral del Caimán Cienaguero de Ciénaga, Magdal
 - **Flecha de objetivo**: una flecha dorada en el borde de la pantalla apunta a la siguiente meta. Cuando la meta está a la vista, un marcador rebota encima de ella.
 - **Avisos del caimán**: cerca del caimán aparecen burbujas y se oye un latido que se acelera. Antes de lanzarse se hunde, burbujea, muestra un `!` y se ilumina durante 1,2 s. Solo hace daño cuando ya está persiguiendo. Al recibir un golpe hay temblor de pantalla, un destello rojo y una pausa breve, y el borde de la pantalla se tiñe de rojo mientras te persigue.
 - **Minijuego del tambor alegre** (escena 7): presiona E cuando cada parche llega al tambor, al ritmo del llamador, las maracas y la gaita. Para volver al presente hay que tocarlo. El ritmo da un bono de hasta +50 la primera vez, y luego se puede repetir para mejorar el récord.
-- **Álbum de Ciénaga**: 12 tarjetas con datos reales. Las desbloquean las pistas, las figuritas, la historia de Tomasita, el tambor y el final. Se guardan en el navegador (localStorage) entre partidas y se consultan en el menú, en la pausa o en la pantalla de victoria.
+- **Álbum de Ciénaga**: 38 tarjetas con datos reales, en cuatro pestañas: HISTORIA (13: pistas, figuritas, la historia de Tomasita, el tambor y el final), LUGARES (6: al mirar el templete, la iglesia, el palacio, la Casa del Diablo, el Palacio Azul y la estación), SABORES (7: al probar la comida típica) y PALABRAS (12: al oír palabras costeñas en los diálogos). Se guardan en el navegador (localStorage) entre partidas y se consultan en el menú, en la pausa o en la pantalla de victoria.
 
 ## Datos reales usados
 
@@ -131,6 +131,7 @@ caiman-cienaguero/
 │   ├── rhythm.js       Minijuego del tambor alegre
 │   ├── canoe.js, dance.js, verses.js, map.js, fauna.js, quiz.js  Retos, mapa, fauna y quiz
 │   ├── plaza.js        Plaza del Centenario: templete, iglesia, palacio
+│   ├── lugares.js      Casa del Diablo, Palacio Azul, estación, tren y comida típica
 │   ├── fx.js           Capa de efectos WebGL (agua, resplandor, color)
 │   ├── cancion.js      Canción de la danza del Caimán en la fiesta
 │   ├── lib/            PixiJS, pixi-filters y GSAP

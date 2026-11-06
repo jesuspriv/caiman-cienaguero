@@ -328,7 +328,7 @@ class HouseScene extends BaseScene {
       id: this.end ? 'abuelo_fin' : 'abuelo', who: 'abuelo', title: 'el abuelo', x: 712, y: 300, dir: 'left',
       mission: this.end ? null : 'abuelo', showMark: !this.end,
       lines: [
-        { who: 'abuelo', mood: 'happy', text: 'Mateo, ¿alguna vez has escuchado la historia del Caimán Cienaguero?' },
+        { who: 'abuelo', mood: 'happy', text: '¡Ajá, Mateo! ¿Alguna vez has escuchado la historia del Caimán Cienaguero?' },
         { who: 'mateo', text: 'No, abuelo. ¿Qué pasó?' },
         { who: 'abuelo', mood: 'sad', text: 'Es una historia que nuestra gente nunca ha olvidado.' },
         { who: 'abuelo', text: 'Toca esta figura. Quizás puedas conocerla de una manera diferente.' }
@@ -363,6 +363,15 @@ class HouseScene extends BaseScene {
     this.interactables.push(new Interactable({
       x: 480, y: 528, r: 50, label: 'Salir',
       onInteract: () => g.say([{ who: 'mateo', text: this.end ? 'Ya es de noche. Mejor me quedo con el abuelo.' : 'Todavía no. El abuelo quiere contarme algo.' }])
+    }));
+    this.interactables.push(new Interactable({
+      x: 858, y: 196, r: 52, label: 'Probar el cayeye', sortY: 172,
+      onInteract: () => g.taste('cayeye', g.flags.sabor_cayeye ? [{ who: 'mateo', mood: 'happy', text: '¡Otro poquito de cayeye! Ya me lo jarté casi todo.' }] : [
+        { who: 'abuelo', mood: 'happy', text: '¡Ajá, mijo! Sírvete cayeye, que lo hice esta mañana: guineo verde machacado, con mantequilla y queso costeño.' },
+        { who: 'mateo', mood: 'happy', text: '¡El cayeye del abuelo es el mejor de Ciénaga!' },
+        { who: 'abuelo', text: 'Es comida de la zona bananera del Magdalena: de Ciénaga, de Aracataca, de Fundación... Aquí se come al desayuno desde que yo era un pelaíto.' }
+      ]),
+      drawFn: ctx => drawFood(ctx, 'cayeye', 872, 150, 0.9)
     }));
     this.interactables.push(new Interactable({
       x: 310, y: 446, r: 44, label: 'Escuchar radio',
@@ -594,7 +603,9 @@ class PuebloScene extends BaseScene {
       { x: 1290, y: 200, text: 'Iglesia San Juan Bautista' }, { x: 500, y: 200, text: 'Palacio Municipal' },
       { x: 1150, y: 700, text: 'Raspao' }, { x: 380, y: 660, text: 'Puesto de frutas' },
       { x: 170, y: 456, text: 'Jardín de cayenas' }, { x: 1540, y: 780, text: 'Redes de pesca' },
-      { x: 1830, y: 470, text: 'Camino al Puerto' }, { x: 250, y: 700, text: 'Almendro' }
+      { x: 1830, y: 470, text: 'Camino al Puerto' }, { x: 250, y: 700, text: 'Almendro' },
+      { x: 500, y: 1150, text: 'Casa del Diablo' }, { x: 1185, y: 1110, text: 'Palacio Azul' },
+      { x: 1545, y: 1150, text: 'Estación del tren' }, { x: 1395, y: 540, text: 'Fritos' }
     ];
   }
 
@@ -740,11 +751,11 @@ class PuebloScene extends BaseScene {
       g.say([{ who: 'vendedora', text: `¿Y los cocos? Me faltan ${3 - (f.qCocosN || 0)}. Búscalos debajo de las palmeras.` }]);
     } else if (f.qCocos === 'active') {
       g.say([
-        { who: 'vendedora', mood: 'happy', text: '¡Ay, bendito! Ahora sí hay cocadas para la fiesta. Toma, prueba una recién hecha.' },
-        { who: 'mateo', mood: 'happy', text: '¡Mmm, qué rica!' }
+        { who: 'vendedora', mood: 'happy', text: '¡Ay, bendito! Ahora sí hay cocadas para la fiesta. Toma, mijo, prueba una recién hecha.' }
       ]).then(() => {
-        f.qCocos = 'done'; g.addScore(30, v.x, v.y - 64); setEmote(g.player, '♥', 1.6);
+        f.qCocos = 'done'; g.addScore(30, v.x, v.y - 64);
         AudioFX.sfx.mission(); g.ui.notify('MISIÓN SECUNDARIA COMPLETADA +30', 'mission');
+        g.taste('cocada', [{ who: 'mateo', mood: 'happy', text: '¡Mmm, qué rica! Sabe a coco y a panela.' }]);
       });
     } else g.say([{ who: 'vendedora', mood: 'happy', text: 'Gracias por los cocos, mijo. ¡Esas cocadas van a volar!' }]);
   }
@@ -754,11 +765,11 @@ class PuebloScene extends BaseScene {
     if (!f.qRed) {
       g.say([
         { who: 'pescador', mood: 'worried', text: 'Muchacho, ¿no has visto mi atarraya? La dejé secando y la brisa se la llevó.' },
-        { who: 'pescador', text: 'Sin ella no hay pesca mañana. Creo que voló hacia el sur, detrás de las casas.' },
+        { who: 'pescador', text: '¡No, ombe! Sin ella no hay pesca mañana. Creo que voló hacia el sur, por la estación del tren.' },
         { who: 'mateo', mood: 'happy', text: '¡Yo te la busco!' }
       ]).then(() => { f.qRed = 'active'; g.ui.notify('MISIÓN SECUNDARIA: LA ATARRAYA DEL PESCADOR', 'mission'); });
     } else if (f.qRed === 'active' && !f.item_red) {
-      g.say([{ who: 'pescador', text: 'Busca por el sur del pueblo, detrás de las casas. ¡Esa atarraya me la tejió mi papá!' }]);
+      g.say([{ who: 'pescador', text: 'Busca por el sur del pueblo, por los rieles del tren. ¡Esa atarraya me la tejió mi papá!' }]);
     } else if (f.qRed === 'active') {
       g.say([
         { who: 'pescador', mood: 'happy', text: '¡Mi atarraya! Gracias, muchacho. Mañana, si Dios quiere, hay pescado fresco.' }
@@ -856,10 +867,16 @@ class PuebloScene extends BaseScene {
     // casas norte
     this.houses = [
       [60, 70, 190, 230, '#1fb5b0', '#c4562b', '#f6c945'], [1550, 70, 190, 230, '#f7f1e3', '#b8402a', '#2f6f6a'],
-      [60, 960, 190, 230, '#f08a2c', '#a3401f', '#1fb5b0'], [290, 960, 190, 230, '#a98ad8', '#c4562b', '#f6c945'], [520, 960, 190, 230, '#1fb5b0', '#b8431f', '#f6c945'],
-      [1080, 960, 190, 230, '#f6c945', '#c4562b', '#3f9b3a'], [1310, 960, 190, 230, '#e86a8a', '#a3401f', '#1fb5b0'], [1540, 960, 190, 230, '#9ad35a', '#c4562b', '#e8613a']
+      [60, 960, 190, 230, '#f08a2c', '#a3401f', '#1fb5b0']
     ];
     this.houses.forEach(([x, y, w, h]) => H(x, y, w, h));
+    // al sur, lugares reales: la Casa del Diablo, el Palacio Azul y la estación del tren
+    this.static.push({ x: 290, y: 998, w: 420, h: 192 });     // Casa del Diablo
+    this.static.push({ x: 1080, y: 948, w: 210, h: 242 });    // Palacio Azul
+    this.static.push({ x: 1316, y: 998, w: 458, h: 192 });    // estación
+    this.static.push({ x: 1562, y: 1196, w: 210, h: 44 });    // locomotora y vagón
+    this.props.push({ y: 1240, draw: (ctx, game, t) => drawTren(ctx, 1560, 1236, t) });
+    this.static.push({ x: 1352, y: 590, w: 128, h: 30 });     // puesto de fritos
     this.static.push({ x: 290, y: 52, w: 420, h: 248 }); // Palacio Municipal
     this.static.push({ x: 1080, y: 52, w: 420, h: 248 }); // iglesia San Juan Bautista
     this.static.push({ x: 890, y: 586, w: 140, h: 78 }, { x: 922, y: 664, w: 76, h: 10 }); // templete
@@ -889,7 +906,7 @@ class PuebloScene extends BaseScene {
     habit({
       id: 'pescador', who: 'pescador', title: 'el pescador', x: 1560, y: 650, dir: 'left',
       lines: [
-        { who: 'pescador', mood: 'happy', text: 'La celebración está comenzando.' },
+        { who: 'pescador', mood: 'happy', text: '¡Eche, qué calor el de hoy! La celebración está comenzando.' },
         { who: 'pescador', text: 'Hoy es 20 de enero, día de San Sebastián. Esta noche todo el pueblo se reúne: hay tambores, hay velas... y el agua de la ciénaga anda inquieta.' },
         { who: 'mateo', text: '¿Inquieta? ¿Por qué?' },
         { who: 'pescador', mood: 'worried', text: 'Los pescadores lo sabemos: cuando el agua calla así, algo se mueve allá abajo.' }
@@ -916,15 +933,53 @@ class PuebloScene extends BaseScene {
       repeatLines: [{ who: 'anciano', text: 'Busca la flor, la vela y la cinta. El pueblo te mostrará el camino.' }]
     });
     // el raspao de la plaza
-    this.npcs.push(new NPC({ id: 'raspao', who: 'raspao', title: 'el raspadero', x: 1196, y: 664, dir: 'left', lines: [
-      { who: 'raspao', mood: 'happy', text: '¡Raspao, raspao! ¡Bien frío pa\' este calor! ¿De qué lo quieres, pelao: de mora, de limón o de tamarindo?' },
+    const raspao = new NPC({ id: 'raspao', who: 'raspao', title: 'el raspadero', x: 1196, y: 664, dir: 'left', lines: [
+      { who: 'raspao', mood: 'happy', text: '¡Ajá, pelao! ¡Raspao, raspao, bien frío pa\' este calor! ¿De qué lo quieres: de mora, de limón o de tamarindo?' },
       { who: 'mateo', mood: 'happy', text: '¡De mora! En mi tiempo también venden raspao aquí, al lado del templete.' },
       { who: 'raspao', text: 'Hielo raspao con sirope de colores y un chorrito de leche condensada. En la Plaza del Centenario siempre ha habido algo fresquito pa\' la gente.' }
-    ], repeatLines: [{ who: 'raspao', mood: 'happy', text: '¡Vuelve cuando quieras! El raspao no se acaba mientras haya calor en Ciénaga.' }] }));
+    ], repeatLines: [{ who: 'raspao', mood: 'happy', text: '¡Vuelve cuando quieras! El raspao no se acaba mientras haya calor en Ciénaga.' }] });
+    raspao.interact = game => {
+      raspao.faceTowards(game.player.x, game.player.y);
+      if (game.flags.sabor_raspao) { game.say(raspao.repeatLines); return; }
+      game.taste('raspao', raspao.lines).then(() => { game.flags.talk_raspao = true; });
+    };
+    Object.defineProperty(raspao, 'label', { get: () => g.flags.sabor_raspao ? 'Hablar' : 'Pedir un raspao' });
+    this.npcs.push(raspao);
+
+    // la fritanguera: arepa e' huevo recién salida del caldero
+    const frit = new NPC({ id: 'fritanguera', who: 'fritanguera', title: 'la fritanguera', x: 1332, y: 612, dir: 'right', lines: [], repeatLines: [] });
+    const fritanga = game => {
+      frit.faceTowards(game.player.x, game.player.y);
+      if (game.flags.sabor_arepa) {
+        game.say([{ who: 'fritanguera', mood: 'happy', text: '¿Otra, mijo? ¡Así me gusta! Esta te la doy de ñapa.' }]).then(() => game.taste('arepa'));
+        return;
+      }
+      game.taste('arepa', [
+        { who: 'fritanguera', mood: 'happy', text: '¡Arepa e\' huevo, carimañola, empanada! ¡Fritos calienticos! ¿Qué vas a querer, pelaíto?' },
+        { who: 'mateo', mood: 'happy', text: '¡Una arepa e\' huevo, por favor!' },
+        { who: 'fritanguera', text: 'Mira el truco: la arepa se fríe una vez y se infla. Se le abre una boquita, se le mete el huevo crudo y vuelve al caldero.' },
+        { who: 'fritanguera', mood: 'happy', text: '¡Ajá, y ahí está! Y te pongo una carimañolita de ñapa, pa\' que vuelvas.' }
+      ]).then(() => { game.flags.talk_fritanguera = true; });
+    };
+    frit.interact = fritanga;
+    Object.defineProperty(frit, 'label', { get: () => 'Comprar una arepa e\' huevo' });
+    this.npcs.push(frit);
+    this.props.push({ y: 606, draw: (ctx, game, t) => drawFritanga(ctx, 1395, 600, t) });
+    // bollos de yuca en el puesto de frutas
+    this.interactables.push(new Interactable({
+      x: 372, y: 664, r: 38, label: 'Probar un bollo de yuca',
+      onInteract: game => game.taste('bollo', game.flags.sabor_bollo ? [] : [
+        { who: 'vendedora', mood: 'happy', text: '¡Bollo de yuca, mijo! Yuca rallada, envuelta en su hoja y cocinada en el agua. Cómetelo con un pedacito de queso.' },
+        { who: 'mateo', mood: 'happy', text: 'Mi abuelo lo come igualito: bollo con queso costeño.' }
+      ])
+    }));
     const plaque = (id, x, y, label, lines) => this.interactables.push(new Interactable({
       x, y, r: 60, label,
       onInteract: game => {
-        game.say(lines).then(() => { if (!game.flags['ver_' + id]) { game.flags['ver_' + id] = true; game.addScore(10, x, y - 60); } });
+        game.say(lines).then(() => {
+          if (!game.flags['ver_' + id]) { game.flags['ver_' + id] = true; game.addScore(10, x, y - 60); }
+          game.unlockCard('l_' + id);
+        });
       }
     }));
     plaque('templete', 960, 712, 'Mirar el templete', [
@@ -936,6 +991,20 @@ class PuebloScene extends BaseScene {
       { who: 'narrador', text: 'La iglesia de San Juan Bautista es la construcción más antigua del centro histórico de Ciénaga. Sus orígenes se remontan al año 1612.' },
       { who: 'narrador', text: 'La levantaron manos indígenas. Siglos después la ampliaron, agrandaron su cúpula y le cambiaron el viejo reloj de la torre.' },
       { who: 'mateo', text: 'La torre blanca del reloj... desde la plaza siempre se ve.' }
+    ]);
+    plaque('diablo', 500, 1214, 'Mirar la Casa del Diablo', [
+      { who: 'narrador', text: 'La Casa del Diablo: una casona blanca, con columnas, balaustradas y una cornisa llena de relieves.' },
+      { who: 'narrador', text: 'La gente cuenta que su dueño, Manuel Varela, hizo un pacto con el diablo para volverse rico... Es una leyenda: nadie lo ha probado, pero los mayores todavía la cuentan.' },
+      { who: 'mateo', mood: 'surprised', text: '¡Yo la conozco! En mi tiempo está en ruinas, y mis amigos dicen que de noche asustan. ¡Ajá, pero yo no les creo!' }
+    ]);
+    plaque('azul', 1185, 1214, 'Mirar el Palacio Azul', [
+      { who: 'narrador', text: 'El Palacio Azul: dos pisos, ventanas en arco y un balcón corrido con la baranda labrada.' },
+      { who: 'narrador', text: 'Casonas así, de estilo republicano, se levantaron con la riqueza del tabaco y del banano. Hoy son parte del centro histórico de Ciénaga, Pueblo Patrimonio de Colombia.' }
+    ]);
+    plaque('estacion', 1440, 1214, 'Mirar la estación', [
+      { who: 'narrador', text: 'La estación del tren. El ferrocarril de Santa Marta llegó a Ciénaga en 1887.' },
+      { who: 'narrador', text: 'Por estos rieles salían los racimos de banano hacia el puerto, y el pueblo se llenó de comercio y de gente de todas partes.' },
+      { who: 'mateo', text: 'Mi abuelo dice que aquí también pasaron cosas tristes, y que por eso en la plaza de la estación hay un monumento. Para no olvidar.' }
     ]);
     plaque('palacio', 500, 330, 'Mirar el palacio', [
       { who: 'narrador', text: 'El Palacio Municipal, de estilo republicano, mira hacia la Plaza del Centenario. Es la sede de la alcaldía.' },
@@ -950,9 +1019,9 @@ class PuebloScene extends BaseScene {
       n.dir = n.vx < 0 ? 'left' : 'right';
       const p = g.player; if (dist(p.x, p.y, n.x, n.y) < 70) { n.moving = false; n.x -= n.vx * dt; n.faceTowards(p.x, p.y); }
     };
-    const mujer = new NPC({ id: 'mujer', who: 'mujer', title: 'una señora', x: 1110, y: 760, behavior: pace(1080, 1240, 30), lines: [{ who: 'mujer', text: 'Esta noche hasta el viento huele a fiesta. ¿Escuchas los tambores a lo lejos?' }] });
+    const mujer = new NPC({ id: 'mujer', who: 'mujer', title: 'una señora', x: 1110, y: 760, behavior: pace(1080, 1240, 30), lines: [{ who: 'mujer', text: 'Esta noche hasta el viento huele a fiesta. ¿Escuchas la bulla de los tambores a lo lejos?' }] });
     mujer.vx = 30; this.npcs.push(mujer);
-    var nino = new NPC({ id: 'nino', who: 'nino', title: 'un niño', x: 760, y: 980, scale: 1.6, behavior: pace(730, 860, 55), lines: [{ who: 'nino', text: '¡Mi abuela dice que de noche no hay que andar solo por la orilla!' }, { who: 'nino', text: 'Pero yo no le tengo miedo a nada... bueno, casi a nada.' }] });
+    var nino = new NPC({ id: 'nino', who: 'nino', title: 'un niño', x: 760, y: 980, scale: 1.6, behavior: pace(730, 860, 55), lines: [{ who: 'nino', text: '¡Mi abuela dice que de noche no hay que andar solo por la orilla!' }, { who: 'nino', text: 'Pero yo no le tengo miedo a nada... bueno, casi a nada.' }, { who: 'nino', mood: 'happy', text: 'Oye, ¿y esa vaina que llevas en la cabeza? ¡Ah, un sombrero vueltiao! ¡Qué bacano!' }] });
     nino.vx = 55; this.npcs.push(nino);
 
     this.vendedora = this.npcs.find(n => n.id === 'vendedora');
@@ -975,7 +1044,7 @@ class PuebloScene extends BaseScene {
       id: 'carmen', who: 'carmen', title: 'doña Carmen', x: 280, y: 470, dir: 'left',
       lines: [
         { who: 'carmen', text: 'Buenas, mijo. ¿Te gustan mis cayenas? Son las más bonitas de Ciénaga.' },
-        { who: 'carmen', mood: 'happy', text: 'Las riego todas las tardes, antes de que empiecen a sonar los tambores.' }
+        { who: 'carmen', mood: 'happy', text: 'Las riego todas las tardes, antes de que empiecen a sonar los tambores. A mis matas las pechicho como a nietas.' }
       ],
       repeatLines: [{ who: 'carmen', text: 'Cuidado con pisarme las matas, ¿oíste?' }]
     });
@@ -1125,6 +1194,10 @@ class PuebloScene extends BaseScene {
     this.houses.forEach(([x, y, w, h, wall, roof, sh], i) => drawHouse(c, x, y, w, h, wall, roof, rnd, { shutter: sh, plants: i % 2 === 0, lit: i % 3 === 0 }));
     drawPalacioMunicipal(c, 290, 40, 420, 260, rnd);
     drawIglesiaSJB(c, 1080, 40, 420, 260, rnd);
+    drawCasaDelDiablo(c, 290, 990, 420, 200, rnd);
+    drawPalacioAzul(c, 1080, 940, 210, 250, rnd);
+    drawEstacion(c, 1330, 990, 430, 200, rnd);
+    drawRails(c, 1304, this.width, 1236, rnd);
 
     // bancas blancas, faroles, árboles de sombra y palmeras (troncos)
     this.benches.forEach(([x, y]) => drawWhiteBench(c, x, y));
@@ -1147,7 +1220,7 @@ class PuebloScene extends BaseScene {
     // flores y matas sueltas
     for (let i = 0; i < 26; i++) {
       const x = rnd() * W, y = rnd() * Hh;
-      if ((y > 540 && y < 720) || (x > 870 && x < 1050) || (x > 580 && x < 1340 && y > 360 && y < 900) || y < 330) continue;
+      if ((y > 540 && y < 720) || (x > 870 && x < 1050) || (x > 580 && x < 1340 && y > 360 && y < 900) || y < 330 || (y > 940 && x > 260)) continue;
       drawFlowerBush(c, x, y, 10 + rnd() * 8, rnd);
     }
     // jardín de cayenas (donde está la flor)
@@ -1195,6 +1268,10 @@ class PuebloScene extends BaseScene {
       L.push({ x: 1408, y: 120, r: 70, i: 0.5 * a, color: 'rgba(255,240,200,1)' });      // reloj de la torre
       [380, 500, 620].forEach(x => L.push({ x, y: 160, r: 60, i: 0.45 * a, color: 'rgba(255,200,120,1)' }));   // palacio
       L.push({ x: 960, y: 590, r: 150, i: 0.5 * a, color: 'rgba(255,248,225,1)' });     // templete iluminado
+      [1120, 1185, 1250].forEach(x => L.push({ x, y: 1010, r: 52, i: 0.5 * a, color: 'rgba(255,200,120,1)' }));   // Palacio Azul
+      [1400, 1545, 1690].forEach(x => L.push({ x, y: 1120, r: 90, i: 0.55 * a, color: 'rgba(255,214,140,1)' }));  // estación
+      L.push({ x: 1576, y: 1206, r: 60, i: 0.6 * a, color: 'rgba(255,240,180,1)' });   // farol de la locomotora
+      L.push({ x: 1440, y: 590, r: 90, i: 0.55 * a, color: 'rgba(255,160,70,1)' });    // fogón de los fritos
     }
     for (const p of this.particles.list) if (p.glow && p.color === '#d8ff7a') L.push({ x: p.x, y: p.y, r: 18, i: 0.6 });
     return L;
@@ -1206,6 +1283,9 @@ class PuebloScene extends BaseScene {
       const x = cam.x + Math.random() * this.game.VW, y = cam.y + Math.random() * this.game.VH;
       if (this.surfaceAt(x, y) === 'grass') this.particles.emit(x, y, { count: 1, color: '#d8ff7a', speed: 8, life: 2.5, size: 2, glow: true, drag: 0.98 });
     }
+    // humo de la locomotora y del fogón de los fritos
+    if (Math.random() < 0.08) this.particles.emit(1592, 1176, { count: 1, color: ['#d8d8d8', '#bfbfbf', '#9a9a9a'], speed: 10, life: 2.6, gravity: -22, size: 5, drag: 0.97 });
+    if (Math.random() < 0.05) this.particles.emit(1455, 580, { count: 1, color: ['#cfcfcf', '#a8a8a8'], speed: 6, life: 1.8, gravity: -18, size: 4, drag: 0.97 });
     // hojas que caen del almendro
     if (Math.random() < 0.05) this.particles.emit(220 + Math.random() * 60, 690, { count: 1, color: '#c9a24a', speed: 10, life: 3, gravity: 18, size: 3, spin: true });
   }
@@ -1649,7 +1729,7 @@ class FiestaScene extends BaseScene {
       const n = new NPC({
         id, who: 'tamborero', x, y, dir: 'right', dance: true, talkable: talk, facePlayer: false,
         lines: [
-          { who: 'tamborero', text: '¡Que suene el tambor! Así recordamos a Tomasita: con música y no con miedo.' },
+          { who: 'tamborero', text: '¡Ajá, mi llave! ¡Que suene el tambor! Así recordamos a Tomasita: con música y no con miedo.' },
           { who: 'tamborero', text: 'El tambor alegre, el llamador y las maracas cuentan la historia mejor que mil palabras.' }
         ]
       });
@@ -1689,6 +1769,20 @@ class FiestaScene extends BaseScene {
     this.npcs.push(new NPC({ id: 'nino_fiesta', who: 'nino', x: 1100, y: 450, scale: 1.6, prop: 'caiman', dir: 'down', lines: [{ who: 'nino', text: '¡Mira mi caimán! Lo tallé con mi abuelo.' }, { who: 'nino', text: 'Cuando sea viejito se lo voy a regalar a mi nieto, para que él también cuente la historia.' }] }));
     this.npcs.push(new NPC({ id: 'mujer_fiesta', who: 'mujer', lookKey: 'vendedora', x: 120, y: 370, dir: 'down', talkable: false, solid: false }));
 
+    // mesas de comida: pescado frito y carimañolas
+    const comida = (x, kind, label, lines) => this.interactables.push(new Interactable({
+      x, y: 372, r: 52, label, sortY: 344,
+      onInteract: game => game.taste(kind, game.flags['sabor_' + kind] ? [] : lines)
+    }));
+    comida(120, 'pescado', 'Probar el pescado frito', [
+      { who: 'vendedora', mood: 'happy', text: '¡Pescao frito, arroz con coco y patacón! Lo que Ciénaga sabe hacer mejor, mijo.' },
+      { who: 'vendedora', text: 'El pescao lo trajeron esta mañana los pescadores de la Ciénaga Grande. ¡Pero no te vayas a jartar todos los patacones!' },
+      { who: 'mateo', mood: 'happy', text: '¡Crocante por fuera y suavecito por dentro! Y el arroz con coco sabe dulcito.' }
+    ]);
+    comida(1320, 'carimanola', 'Probar una carimañola', [
+      { who: 'vendedora', mood: 'happy', text: '¡Carimañolas calienticas! Masa de yuca rellena de carne o de queso. ¿Cuál quieres?' },
+      { who: 'mateo', mood: 'happy', text: '¡De queso! Parece un torpedito dorado.' }
+    ]);
     // marías mulatas buscando migas junto a las mesas de comida
     [[90, 380, { x: 40, y: 360, w: 200, h: 70 }], [150, 400, { x: 40, y: 360, w: 200, h: 70 }], [1290, 390, { x: 1220, y: 360, w: 200, h: 70 }]]
       .forEach(([x, y, z]) => this.critters.push(new Bird(this, x, y, z)));
@@ -1779,8 +1873,9 @@ class FiestaScene extends BaseScene {
     // mesas de comida
     [[60, 300], [1260, 300]].forEach(([x, y]) => {
       c.fillStyle = '#fdf6e3'; c.fillRect(x, y, 120, 44); c.fillStyle = '#e8313a'; for (let k = 0; k < 120; k += 12) c.fillRect(x + k, y + 38, 6, 8);
-      ['#f6c945', '#8a5a2b', '#f08a2c', '#3f9b3a'].forEach((f, k) => { c.fillStyle = f; c.beginPath(); c.arc(x + 18 + k * 28, y + 18, 8, 0, Math.PI * 2); c.fill(); });
     });
+    [0, 1, 2].forEach(k => { drawFood(c, 'pescado', 86 + k * 34, 316 + (k % 2) * 6, 0.62); drawFood(c, 'carimanola', 1286 + k * 34, 318 + (k % 2) * 4, 0.8); });
+    drawFood(c, 'arepa', 1300, 336, 0.6); drawFood(c, 'cocada', 150, 334, 0.6);
     this.palms.forEach(([x, y, s]) => drawPalmTrunk(c, x, y, 66, s % 2 ? 10 : -10));
     // tambores en el suelo
     [[180, 470], [250, 560]].forEach(([x, y]) => { c.fillStyle = '#8a5a2b'; c.fillRect(x - 10, y - 18, 20, 18); c.fillStyle = '#e9dcc0'; c.beginPath(); c.ellipse(x, y - 18, 10, 4, 0, 0, Math.PI * 2); c.fill(); });

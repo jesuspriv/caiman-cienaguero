@@ -21,11 +21,12 @@ const SPEAKERS = {
   portador: { name: 'PORTADOR DEL CAIMÁN', color: '#b5e39a' },
   verseador: { name: 'VERSEADOR', color: '#ffd36b' },
   carmen: { name: 'DOÑA CARMEN', color: '#d8c4ff' },
+  fritanguera: { name: 'LA FRITANGUERA', color: '#ffc46b' },
   raspao: { name: 'EL RASPADERO', color: '#8ff2ea' }
 };
 
 /* Gente de la fiesta: cuando exclaman, es de alegría. */
-const FESTIVE = ['tamborero', 'bailadora', 'portador', 'verseador', 'vendedora', 'nino', 'raspao'];
+const FESTIVE = ['tamborero', 'bailadora', 'portador', 'verseador', 'vendedora', 'nino', 'raspao', 'fritanguera'];
 
 /**
  * Emoción del retrato para una línea: la indicada con `mood`
@@ -47,6 +48,9 @@ class DialogueSystem {
     this.textEl = document.getElementById('dialogue-text');
     this.contEl = document.getElementById('dialogue-continue');
     this.portrait = document.getElementById('portrait');
+    this.glossEl = document.getElementById('dialogue-gloss');
+    this.words = [];
+    this.glossSeen = new Set();
     this.active = false;
     this.queue = [];
     this.current = null;
@@ -83,6 +87,21 @@ class DialogueSystem {
     frame.className = 'portrait-frame';
     if (mood) { void frame.offsetWidth; frame.classList.add('mood-' + mood); }
     this.contEl.style.visibility = 'hidden';
+    // palabras costeñas de esta línea: se resaltan, se explican abajo y se guardan en el álbum
+    this.words = typeof findPalabras === 'function' ? findPalabras(this.current.text) : [];
+    const seen = new Set();
+    this.glossEl.innerHTML = '';
+    this.words.forEach(m => {
+      // la explicación sale una vez por sesión; la palabra se sigue resaltando siempre
+      if (seen.has(m.p.id) || this.glossSeen.has(m.p.id)) return;
+      seen.add(m.p.id); this.glossSeen.add(m.p.id);
+      const s = document.createElement('span');
+      const b = document.createElement('b'); b.textContent = m.p.word.split(',')[0];
+      s.append('📖 ', b, ': ' + m.p.def);
+      this.glossEl.appendChild(s);
+      this.game.unlockWord(m.p);
+    });
+    this.glossEl.classList.toggle('hidden', !seen.size);
     this.render();
   }
 
@@ -122,13 +141,22 @@ class DialogueSystem {
   }
 
   render() {
-    const txt = this.current.text.slice(0, this.shown);
-    this.textEl.textContent = this.isNarrator ? txt : '“' + txt + (this.shown >= this.current.text.length ? '”' : '');
+    const full = this.current.text, n = this.shown, done = n >= full.length;
+    const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    let html = '', at = 0;
+    for (const m of this.words) {
+      if (m.start >= n) break;
+      html += esc(full.slice(at, m.start)) + '<span class="costeno">' + esc(full.slice(m.start, Math.min(m.end, n))) + '</span>';
+      at = Math.min(m.end, n);
+    }
+    html += esc(full.slice(at, n));
+    this.textEl.innerHTML = this.isNarrator ? html : '“' + html + (done ? '”' : '');
     this.contEl.style.visibility = this.shown >= this.current.text.length ? 'visible' : 'hidden';
   }
 
   close() {
     this.active = false;
+    this.glossEl.classList.add('hidden');
     this.current = null;
     this.el.classList.add('hidden');
     const cb = this.onDone;

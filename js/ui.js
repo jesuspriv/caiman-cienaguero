@@ -98,9 +98,17 @@ class UI {
   }
   buildCredits() {
     const ul = this.$('credits-photos');
+    // agrupadas por autor y licencia, para que quepan todas
+    const groups = new Map();
     ALBUM_CARDS.filter(c => c.photo).forEach(c => {
+      const k = `${c.photo.author} (${c.photo.license})`;
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(c.title);
+    });
+    groups.forEach((titles, k) => {
       const li = document.createElement('li');
-      li.textContent = `${c.title}: ${c.photo.author} (${c.photo.license})`;
+      const b = document.createElement('b'); b.textContent = k + ': ';
+      li.append(b, titles.join(', ') + '.');
       ul.appendChild(li);
     });
   }
@@ -150,13 +158,25 @@ class UI {
 
   /* ---------- Álbum de Ciénaga ---------- */
   buildAlbum() {
-    const grid = this.$('album-grid');
-    grid.innerHTML = '';
-    ALBUM_CARDS.forEach((c, i) => {
+    const grid = this.$('album-grid'), tabs = this.$('album-tabs');
+    grid.innerHTML = ''; tabs.innerHTML = '';
+    this.albumTab = 'historia';
+    ALBUM_TABS.forEach(tb => {
+      const b = document.createElement('button');
+      b.className = 'btn tab';
+      b.dataset.tab = tb.id;
+      b.addEventListener('click', () => { AudioFX.init(); AudioFX.sfx.blip(); this.setAlbumTab(tb.id, true); });
+      b.addEventListener('mouseenter', () => { const list = this.visibleButtons(); this.setFocus(list.indexOf(b)); });
+      tabs.appendChild(b);
+    });
+    const num = {};
+    ALBUM_CARDS.forEach(c => {
+      num[c.cat] = (num[c.cat] || 0) + 1;
       const b = document.createElement('button');
       b.className = 'btn card';
       b.dataset.card = c.id;
-      b.innerHTML = `<span class="card-num">${i + 1}</span><span class="card-name"></span>`;
+      b.dataset.cat = c.cat;
+      b.innerHTML = `<span class="card-num">${num[c.cat]}</span><span class="card-name"></span>`;
       b.addEventListener('click', () => { AudioFX.init(); AudioFX.sfx.blip(); const list = this.visibleButtons(); this.setFocus(list.indexOf(b)); });
       b.addEventListener('mouseenter', () => { const list = this.visibleButtons(); this.setFocus(list.indexOf(b)); });
       grid.appendChild(b);
@@ -171,7 +191,24 @@ class UI {
       b.classList.toggle('locked', !open);
       b.querySelector('.card-name').textContent = open ? c.title : '???';
     });
+    this.$('album-tabs').querySelectorAll('.tab').forEach(b => {
+      const tb = ALBUM_TABS.find(x => x.id === b.dataset.tab);
+      b.innerHTML = `${tb.label}<small>${album.countIn(tb.id)}/${album.totalIn(tb.id)}</small>`;
+    });
+    this.setAlbumTab(this.albumTab || 'historia', false);
     this.showScreen('album');
+    this.focusFirstCard();
+  }
+  /** Muestra solo las tarjetas de una pestaña del álbum. */
+  setAlbumTab(id, focus) {
+    this.albumTab = id;
+    this.$('album-tabs').querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === id));
+    this.$('album-grid').querySelectorAll('.card').forEach(b => b.classList.toggle('hidden', b.dataset.cat !== id));
+    if (focus) this.focusFirstCard();
+  }
+  focusFirstCard() {
+    const list = this.visibleButtons(), i = list.findIndex(b => b.dataset.card);
+    if (i >= 0) this.setFocus(i);
   }
   showCard(id) {
     const album = this.game.album, c = album.card(id), open = album.has(id);

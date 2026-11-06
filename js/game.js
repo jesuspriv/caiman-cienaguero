@@ -410,12 +410,42 @@ class Game {
   }
 
   /* ================= Reglas del juego ================= */
-  unlockCard(id) {
+  unlockCard(id, delay = 0.9) {
     const card = this.album.unlock(id);
     if (!card) return;
-    this.after(0.9, () => {
+    const msg = { lugares: 'NUEVO LUGAR EN EL ÁLBUM: ', sabores: 'NUEVO SABOR EN EL ÁLBUM: ', palabras: 'PALABRA COSTEÑA NUEVA: ' }[card.cat] || 'NUEVA TARJETA DEL ÁLBUM: ';
+    this.after(delay, () => {
       AudioFX.sfx.album();
-      this.ui.notify('NUEVA TARJETA DEL ÁLBUM: ' + card.title.toUpperCase(), 'album');
+      this.ui.notify(msg + card.title.toUpperCase(), 'album');
+    });
+  }
+
+  /** Una palabra costeña aparece en un diálogo: se guarda en el álbum. */
+  unlockWord(p) {
+    if (this.album.has('p_' + p.id)) return;
+    this.unlockCard('p_' + p.id, 0.2);
+    this.addScore(5);
+  }
+
+  /** Probar una comida típica: diálogo, animación y, la primera vez, puntos y tarjeta. */
+  taste(kind, lines = []) {
+    return this.say(lines).then(() => {
+      const p = this.player, sc = this.scene;
+      if (!p || !sc) return;
+      const t0 = sc.t, prop = { get y() { return p.y + 1; }, draw: ctx => {
+        const k = Math.min(1, (sc.t - t0) / 0.35), bob = Math.sin((sc.t - t0) * 9) * 2;
+        drawFood(ctx, kind, p.x, p.y - 74 - k * 10 + bob, 0.9 + k * 0.3);
+      } };
+      sc.props.push(prop);
+      this.after(1.6, () => { sc.props = sc.props.filter(q => q !== prop); });
+      AudioFX.sfx.pickup();
+      setEmote(p, '♥', 1.8);
+      sc.particles.emit(p.x, p.y - 70, { count: 16, color: ['#f6c945', '#ffe9a8', '#ff9aa4'], speed: 70, life: 0.9, glow: true });
+      if (this.flags['sabor_' + kind]) return;
+      this.flags['sabor_' + kind] = true;
+      this.addScore(10, p.x, p.y - 90);
+      this.ui.notify('¡QUÉ RICO! PROBASTE: ' + (SABORES[kind] || kind).toUpperCase() + ' +10', 'info');
+      this.unlockCard('s_' + kind, 1.2);
     });
   }
 

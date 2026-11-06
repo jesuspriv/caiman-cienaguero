@@ -121,6 +121,7 @@ const LOOKS = {
   bailadora3: { skin: '#7a4a2c', hair: '#1a1210', hairStyle: 'long', dress: '#1fb5b0', dressShade: '#0e7c86', shirt: '#fdf6e3', skirtStripe: '#e8613a', shoes: '#5a3a1a', flower: '#fdf6e3' },
   bailador: { skin: '#7a4a2c', hair: '#1a1a1a', hairStyle: 'short', shirt: '#fdf6e3', pants: '#fdf6e3', shoes: '#2a1a0e', hat: 'vueltiao', scarf: '#e8313a' },
   verseador: { skin: '#7a4a2c', hair: '#1a1a1a', hairStyle: 'short', shirt: '#e8613a', pants: '#fdf6e3', shoes: '#3a2414', hat: 'straw', scarf: '#f6c945', mustache: '#1a1a1a' },
+  fritanguera: { skin: '#5e3a24', hair: '#1a1210', hairStyle: 'bun', dress: '#1fb5b0', dressShade: '#0e7c86', shirt: '#fdf6e3', headscarf: '#e8313a', shoes: '#5a3a1a', skirtStripe: '#fdf6e3' },
   raspao: { skin: '#7a4a2c', hair: '#1a1a1a', hairStyle: 'short', shirt: '#fdf6e3', shirtShade: '#d8d0bc', pants: '#2b3448', shoes: '#3a2414', hat: 'straw', scarf: '#1fb5b0', mustache: '#1a1a1a' },
   portador: { skin: '#9a5e3a', hair: '#1a1a1a', hairStyle: 'short', shirt: '#3f9b3a', pants: '#e8dcc0', shoes: '#3a2414', scarf: '#f6c945' }
 };
@@ -670,7 +671,7 @@ const PORTRAIT_BG = {
   abuelo: ['#f08a2c', '#5e3b1a'], mateo: ['#1fb5b0', '#0b3d5c'], pescador: ['#156b8a', '#0b2a40'],
   vendedora: ['#f6c945', '#b8431f'], anciano: ['#3f9b3a', '#1b3d1e'], tomasita: ['#f2d7c0', '#6e4a7a'],
   juanita: ['#1fb5b0', '#0b2a40'], narrador: ['#e8613a', '#2a1030'], mujer: ['#7a5cc4', '#2a1a40'],
-  nino: ['#f6c945', '#7a4a10'], tamborero: ['#e8613a', '#3a1208'], bailadora: ['#e8313a', '#4a0a18'], portador: ['#3f9b3a', '#10301a'], verseador: ['#f6c945', '#7a2410'], carmen: ['#c4a8f0', '#3a2058'], raspao: ['#1fb5b0', '#0b3d5c']
+  nino: ['#f6c945', '#7a4a10'], tamborero: ['#e8613a', '#3a1208'], bailadora: ['#e8313a', '#4a0a18'], portador: ['#3f9b3a', '#10301a'], verseador: ['#f6c945', '#7a2410'], carmen: ['#c4a8f0', '#3a2058'], raspao: ['#1fb5b0', '#0b3d5c'], fritanguera: ['#ffc46b', '#8a2a10']
 };
 const PORTRAIT_LOOK = { bailadora: 'bailadora1' };
 

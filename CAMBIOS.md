@@ -5,7 +5,7 @@ Objetivo de esta ronda: que niños y jóvenes que no conocen la historia del Cai
 ## Para aprender (lo educativo)
 
 1. **Quiz «¿Cuánto sabes de Ciénaga?»**
-   - 8 preguntas al azar de un banco de 14, todas con datos reales que el juego enseña: el 20 de enero, Magdalena, la tradición oral, la danza, los instrumentos, los verseadores, Pueblo Viejo, los palafitos, los «machorros», el Patrimonio Cultural, el caimán aguja…
+   - 8 preguntas al azar de un banco de 18, todas con datos reales que el juego enseña: el 20 de enero, Magdalena, la tradición oral, la danza, los instrumentos, los verseadores, Pueblo Viejo, los palafitos, los «machorros», el Patrimonio Cultural, el caimán aguja…
    - Después de cada respuesta, acertada o no, explica el dato, así que el quiz también enseña.
    - Muestra una medalla («¡Guardián de la memoria de Ciénaga!») y guarda el récord.
    - Está en el menú principal y en la pantalla de victoria («¿CUÁNTO APRENDISTE?»).
@@ -75,6 +75,23 @@ Objetivo de esta ronda: que niños y jóvenes que no conocen la historia del Cai
     - Sin internet, o si YouTube no carga, suena la cumbia original como antes.
     - Los créditos ahora mencionan la canción y las librerías.
 22. **La canción ahora va dentro del proyecto** (`audio/danza-caiman.mp3`): suena sin internet, sin recuadro de video y también abriendo el juego con doble clic. Si el archivo falta, el juego usa YouTube, y si tampoco, la cumbia original.
+
+## Más Ciénaga: lugares, comida y habla costeña
+
+23. **Tres lugares reales nuevos en el sur del pueblo** (`js/lugares.js`), dibujados a partir de fotos de Wikimedia Commons:
+    - **La Casa del Diablo**: casona blanca con pórtico de columnas en la esquina, balaustradas, cornisa con relieves y el desgaste de hoy (manchas, grietas, ladrillo a la vista, matas en la azotea). Su placa cuenta la leyenda de Manuel Varela y aclara que es una leyenda.
+    - **El Palacio Azul**: casona republicana de dos pisos, con ventanas en arco y balcón corrido de baranda labrada.
+    - **La estación del tren**: techo de zinc, reloj, ventanilla de tiquetes, campana, andén, rieles y una locomotora del Ferrocarril de Santa Marta con un vagón de racimos de banano, que echa humo. La placa cuenta que el tren llegó en 1887 y, con cuidado, que en la plaza de la estación hay un monumento para no olvidar.
+    - De noche se encienden sus luces, y el mapa muestra sus nombres.
+24. **Comida típica que se puede probar** (+10 la primera vez, con animación y tarjeta en el álbum):
+    - **Cayeye** en la casa del abuelo, en el fogón.
+    - **Bollo de yuca** en el puesto de frutas, **cocada** al terminar la misión de los cocos y **raspao** con el raspadero.
+    - **Arepa e' huevo** con **la fritanguera**, un personaje nuevo con su fogón de leña y su caldero, que explica cómo se hace y regala la ñapa.
+    - **Pescado frito con arroz con coco y patacón** y **carimañolas** en las mesas de la fiesta.
+25. **Habla costeña**: los personajes dicen ajá, pelao, mijo, ¡eche!, vaina, bacano, ¡ombe!, pechichar, ñapa, bulla, mi llave y jartar. En el diálogo la palabra se resalta en amarillo y abajo aparece qué significa; la primera vez se guarda en el álbum (+5).
+26. **El álbum ahora tiene pestañas**: HISTORIA (13), LUGARES (6), SABORES (7) y PALABRAS (12), en total 38 tarjetas, cada una con su foto real o su dibujo. Las placas del templete, la iglesia y el palacio también guardan su lugar en el álbum.
+27. **Cuatro preguntas nuevas en el quiz** (banco de 18): el cayeye, la ñapa, el año del tren y la leyenda de la Casa del Diablo.
+28. Los créditos agrupan las fotos por autor para que quepan todas, y las fotos nuevas están guardadas en `assets/images/album/` para que funcionen sin internet.
 
 ## Probado
 

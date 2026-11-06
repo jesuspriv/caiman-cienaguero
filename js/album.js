@@ -38,7 +38,7 @@ const ALBUM_CARDS = [
     icon: c => { c.save(); c.translate(80, 86); c.scale(0.7, 0.7); drawTempleteBase(c, 0, 0); drawTempleteDome(c, 0, 0); c.restore(); }
   },
   {
-    photo: { file: 'CasadelDiablo-Ciénaga, Magdalena-20251206.jpg', author: 'Jdvillalobos', license: 'CC BY-SA 4.0', caption: 'La Casa del Diablo, una de las casas de la época de la bonanza.' },
+    photo: { file: 'PrometeodelaLibertad-Ciénaga, Magdalena-20251206-WA0027.jpg', author: 'Jdvillalobos', license: 'CC BY-SA 4.0', caption: 'Prometeo de la Libertad, de Rodrigo Arenas Betancur (1978), en memoria de la Masacre de las Bananeras.' },
     id: 'fig3', title: 'Tabaco, banano y memoria', how: 'Figurita escondida en el pueblo',
     text: 'Las bonanzas del tabaco y del banano dejaron en Ciénaga casas y edificios de estilo republicano. También dejaron memoria dolorosa: la noche del 5 al 6 de diciembre de 1928, en la plaza de la estación del tren, ocurrió la Masacre de las Bananeras contra trabajadores en huelga.',
     icon: c => { c.fillStyle = '#3f9b3a'; for (let i = 0; i < 5; i++) { c.beginPath(); c.ellipse(80 + Math.cos(i * 1.25) * 26, 54 + Math.sin(i * 1.25) * 14, 26, 8, i * 1.25, 0, Math.PI * 2); c.fill(); } c.fillStyle = '#f6c945'; for (let i = 0; i < 4; i++) c.fillRect(66 + i * 8, 64, 6, 30); c.fillStyle = '#6b3d1a'; c.fillRect(78, 54, 4, 52); }
@@ -87,6 +87,130 @@ ALBUM_CARDS.push({
   icon: (c, t) => { glow(c, 80, 62, 60, 'rgba(255,214,120,0.8)'); drawCaiman(c, 80, 64, -0.15, 0, { wood: true, scale: 0.55, amp: 2 }); }
 });
 
+/* ---------- Lugares reales de Ciénaga (se desbloquean al mirarlos) ---------- */
+const LUGAR_CARDS = [
+  {
+    photo: { file: 'Templete de Cienaga - Plaza.jpg', author: 'Kevin Lopez Blanco', license: 'CC BY-SA 4.0', caption: 'El Templete en la Plaza del Centenario.' },
+    id: 'l_templete', title: 'La Plaza del Centenario', how: 'Mira el templete en la plaza',
+    text: 'Es la plaza principal de Ciénaga. En el centro está el Templete, y los caminos llegan a él como los rayos de una estrella, entre jardineras, árboles de sombra y bancas. Alrededor quedan la iglesia de San Juan Bautista y el Palacio Municipal. Es el punto de encuentro de los cienagueros.',
+    icon: c => { c.save(); c.translate(80, 92); c.scale(0.62, 0.62); drawTempleteBase(c, 0, 0); drawTempleteDome(c, 0, 0); c.restore(); }
+  },
+  {
+    photo: { file: 'Parroquia San Juan Bautist de Ciénaga, Magdalena.jpg', author: 'Luisnh1210', license: 'CC BY-SA 4.0', caption: 'Iglesia de San Juan Bautista, en Ciénaga.' },
+    id: 'l_iglesia', title: 'Iglesia de San Juan Bautista', how: 'Mira la iglesia en la plaza',
+    text: 'Es la construcción más antigua del centro histórico de Ciénaga: sus orígenes se remontan a 1612 y la levantaron manos indígenas. Siglos después la ampliaron, agrandaron su cúpula y le cambiaron el reloj de la torre. San Juan Bautista es el santo patrono de Ciénaga.',
+    icon: c => { c.save(); c.translate(4, 8); c.scale(0.36, 0.36); drawIglesiaSJB(c, 0, 20, 420, 260, mulberry32(4)); c.restore(); }
+  },
+  {
+    photo: { file: 'PalacioMunicipal-Ciénaga, Magdalena-20251206.jpg', author: 'Jdvillalobos', license: 'CC BY-SA 4.0', caption: 'Palacio Municipal de Ciénaga.' },
+    id: 'l_palacio', title: 'El Palacio Municipal', how: 'Mira el palacio en la plaza',
+    text: 'Es la sede de la alcaldía y mira hacia la Plaza del Centenario. Es de estilo republicano, como muchas casonas del centro histórico de Ciénaga, que fue declarado Monumento Nacional en 1994.',
+    icon: c => { c.save(); c.translate(4, 8); c.scale(0.36, 0.36); drawPalacioMunicipal(c, 0, 20, 420, 260, mulberry32(5)); c.restore(); }
+  },
+  {
+    photo: { file: 'CasadelDiablo-Ciénaga, Magdalena-20251206.jpg', author: 'Jdvillalobos', license: 'CC BY-SA 4.0', caption: 'La Casa del Diablo, en Ciénaga.' },
+    id: 'l_diablo', title: 'La Casa del Diablo', how: 'Mira la Casa del Diablo, en el sur del pueblo',
+    text: 'Es una casona blanca de estilo republicano, con columnas y balaustradas. Su construcción empezó hacia 1916, en plena bonanza del banano, y hoy está en ruinas. La gente cuenta que su dueño, Manuel Varela, hizo un pacto con el diablo para volverse rico. Es una leyenda: nadie lo ha probado, pero los mayores todavía la cuentan.',
+    icon: c => { c.save(); c.translate(6, 22); c.scale(0.36, 0.36); drawCasaDelDiablo(c, 0, 0, 420, 200, mulberry32(6)); c.restore(); }
+  },
+  {
+    photo: { file: 'PalacioAzul-Ciénaga, Magdalena-20251206.jpg', author: 'Jdvillalobos', license: 'CC BY-SA 4.0', caption: 'El Palacio Azul, en Ciénaga.' },
+    id: 'l_azul', title: 'El Palacio Azul', how: 'Mira el Palacio Azul, en el sur del pueblo',
+    text: 'Es una de las casonas republicanas más llamativas de Ciénaga: dos pisos azules, ventanas en arco y un balcón corrido con baranda labrada. Casas así se levantaron con la riqueza del tabaco y del banano, y son parte del centro histórico, que hoy es Pueblo Patrimonio de Colombia.',
+    icon: c => { c.save(); c.translate(42, 4); c.scale(0.44, 0.44); drawPalacioAzul(c, 0, 0, 170, 250, mulberry32(7)); c.restore(); }
+  },
+  {
+    photo: { file: 'Comisariato cienaga.jpg', author: 'Autor desconocido', license: 'Dominio público', caption: 'Comisariato de la United Fruit Company en Ciénaga, en 1928.' },
+    id: 'l_estacion', title: 'El tren de Ciénaga', how: 'Mira la estación del tren, en el sur del pueblo',
+    text: 'El ferrocarril de Santa Marta llegó a Ciénaga en 1887. Por sus rieles salían los racimos de banano hacia el puerto, y el pueblo se llenó de comercio. En 1928, en la plaza de la estación, ocurrió la Masacre de las Bananeras contra trabajadores en huelga; allí está hoy el monumento Prometeo de la Libertad.',
+    icon: c => { c.fillStyle = '#8a8172'; c.fillRect(0, 96, 160, 24); drawRails(c, 6, 160, 100, mulberry32(8)); drawTren(c, 4, 100, 0); }
+  }
+];
+
+/* ---------- Comida típica (se desbloquea al probarla) ---------- */
+const SABOR_CARDS = [
+  {
+    photo: { file: 'Cayeye.jpg', author: 'Jdvillalobos', license: 'CC BY-SA 4.0', caption: 'Cayeye con guiso y queso costeño rallado.' },
+    id: 's_cayeye', title: 'Cayeye', how: 'Pruébalo en la casa del abuelo',
+    text: 'Puré de guineo verde con mantequilla y queso costeño; a veces lleva guiso de tomate y cebolla. Es típico del Magdalena: se come en Ciénaga, la Zona Bananera, Santa Marta, Fundación y Aracataca, sobre todo al desayuno. También se le dice mote de guineo.',
+    icon: c => drawFood(c, 'cayeye', 80, 64, 3)
+  },
+  {
+    photo: { file: 'Bollo de yuca.jpg', author: 'Jdvillalobos', license: 'CC BY 3.0', caption: 'Bollos de yuca.' },
+    id: 's_bollo', title: 'Bollo de yuca', how: 'Pruébalo en el puesto de frutas del pueblo',
+    text: 'Yuca rallada, envuelta en hojas y cocinada en agua hirviendo. Los bollos son herencia indígena, y en la costa se comen con queso, con suero o con chicharrón. También está el bollo limpio, que es de maíz.',
+    icon: c => drawFood(c, 'bollo', 80, 64, 3.4)
+  },
+  {
+    photo: { file: 'Cocadas colombianas by P R.png', author: 'P R', license: 'CC BY 2.0', caption: 'Cocadas colombianas.' },
+    id: 's_cocada', title: 'Cocadas', how: 'Ayuda a la vendedora con los cocos',
+    text: 'Dulce de coco rallado cocinado con azúcar o panela; algunas llevan leche o fruta. En la costa se venden en bandejas por las calles, y cada cocadera tiene su secreto.',
+    icon: c => drawFood(c, 'cocada', 80, 64, 3.2)
+  },
+  {
+    photo: { file: 'Raspao - panoramio.jpg', author: 'Jimmy Gómez N', license: 'CC BY-SA 3.0', caption: 'Un raspao (foto de referencia: no es de Ciénaga).' },
+    id: 's_raspao', title: 'Raspao', how: 'Pídelo en la Plaza del Centenario',
+    text: 'Hielo raspado con sirope de colores (de mora, de limón, de tamarindo) y, si quieres, leche condensada. Los raspaderos lo preparan en su carrito, en las plazas, para pasar el calor.',
+    icon: c => drawFood(c, 'raspao', 80, 58, 3.2)
+  },
+  {
+    photo: { file: 'Arepa de huevo.jpg', author: 'Jdvillalobos', license: 'CC BY 3.0', caption: 'Arepa e’ huevo.' },
+    id: 's_arepa', title: 'Arepa e’ huevo', how: 'Pruébala en el puesto de fritos del pueblo',
+    text: 'Arepa de maíz frita con un huevo adentro. Se fríe dos veces: primero se infla, se abre por un lado, se le mete el huevo crudo y vuelve al aceite hasta que el huevo se cocina. Es de toda la costa Caribe; Luruaco, en el Atlántico, hasta tiene su festival.',
+    icon: c => drawFood(c, 'arepa', 80, 64, 3.6)
+  },
+  {
+    photo: { file: 'Pescado frito-Ciénaga, Magdalena-20251206-WA0035.jpg', author: 'Jdvillalobos', license: 'CC BY-SA 4.0', caption: 'Pescado frito con arroz con coco, patacones y ensalada, en Ciénaga.' },
+    id: 's_pescado', title: 'Pescado frito con arroz con coco', how: 'Pruébalo en la fiesta',
+    text: 'Ciénaga es famosa por su pescado frito, servido con arroz con coco, patacones de plátano verde y ensalada. El pescado viene del mar y de la Ciénaga Grande, donde viven pescadores como los de esta historia.',
+    icon: c => drawFood(c, 'pescado', 80, 64, 2.8)
+  },
+  {
+    photo: { file: 'Barranquilla - Carimañolas.jpg', author: 'Jdvillalobos', license: 'CC BY 3.0', caption: 'Carimañolas (foto tomada en Barranquilla).' },
+    id: 's_carimanola', title: 'Carimañolas', how: 'Pruébalas en la fiesta',
+    text: 'Masa de yuca rellena de carne molida o de queso, con forma de torpedo, frita hasta quedar dorada. Se comen calientes, al desayuno o como pasabocas, en toda la costa Caribe.',
+    icon: c => drawFood(c, 'carimanola', 80, 64, 3.2)
+  }
+];
+
+/* ---------- Palabras costeñas (se desbloquean al oírlas en un diálogo) ---------- */
+const PALABRAS = [
+  { id: 'aja', word: 'Ajá', re: 'aj[aá]', def: 'Sirve para todo: para saludar, para decir que sí o para pedir que te sigan contando.', ej: '¡Ajá, pelao! ¿Y qué más?' },
+  { id: 'pelao', word: 'Pelao, pelaíta', re: 'pela(?:o|os|ito|itos|íto|ítos|ita|itas|íta|ítas)', def: 'Niño o niña, muchacho o muchacha.', ej: 'Ese pelao corre como el viento.' },
+  { id: 'mijo', word: 'Mijo, mija', re: 'mij[oa]s?', def: 'Viene de «mi hijo» o «mi hija». Así les dicen con cariño los mayores a los jóvenes, aunque no sean sus hijos.', ej: 'Cuídate, mijo.' },
+  { id: 'eche', word: '¡Eche!', re: 'eche', pre: '¡', def: 'Para mostrar asombro o fastidio.', ej: '¡Eche, qué calor el de hoy!' },
+  { id: 'vaina', word: 'Vaina', re: 'vainas?', def: 'Cualquier cosa, sobre todo cuando no sabes o no te acuerdas de cómo se llama.', ej: '¿Y esa vaina qué es?' },
+  { id: 'bacano', word: 'Bacano', re: 'bacan(?:o|a|os|as|ísimo|ísima)', def: 'Muy bueno, divertido, chévere.', ej: '¡Qué bacano el festival!' },
+  { id: 'ombe', word: '¡Ombe!', re: 'ombe', def: 'Viene de «hombre». Le da fuerza a lo que dices.', ej: '¡No, ombe! Así no es.' },
+  { id: 'pechichar', word: 'Pechichar', re: 'pechich\\p{L}*', def: 'Consentir, mimar. Y un «pechiche» es alguien muy consentido.', ej: 'La abuela pechicha a todos sus nietos.' },
+  { id: 'napa', word: 'Ñapa', re: 'ñapas?', def: 'Lo que el vendedor te regala de más, para que vuelvas.', ej: 'Y le pongo una arepita de ñapa.' },
+  { id: 'bulla', word: 'Bulla', re: 'bullas?', def: 'Ruido, alboroto: mucha gente hablando y gozando al mismo tiempo.', ej: '¡Qué bulla la de los tambores!' },
+  { id: 'llave', word: 'Mi llave', re: 'mi llave', def: 'Tu amigo de confianza, tu compañero de siempre.', ej: '¡Ajá, mi llave! ¿Vamos pa’ la fiesta?' },
+  { id: 'jartar', word: 'Jartar', re: 'jart\\p{L}+', def: 'Comer (o beber) mucho, hasta quedar lleno.', ej: 'No te vayas a jartar todos los patacones.' }
+];
+PALABRAS.forEach(p => { p.rx = new RegExp((p.pre ? '(?<=' + p.pre + ')' : '(?<![\\p{L}])') + '(?:' + p.re + ')(?![\\p{L}])', 'giu'); });
+const PALABRA_CARDS = PALABRAS.map(p => ({
+  id: 'p_' + p.id, title: p.word, how: 'Escúchala en una conversación',
+  text: p.def + ' Por ejemplo: «' + p.ej + '»',
+  icon: (c, t) => drawWordIcon(c, p.word.split(',')[0], t)
+}));
+
+ALBUM_CARDS.forEach(c => { c.cat = 'historia'; });
+LUGAR_CARDS.forEach(c => { c.cat = 'lugares'; ALBUM_CARDS.push(c); });
+SABOR_CARDS.forEach(c => { c.cat = 'sabores'; ALBUM_CARDS.push(c); });
+PALABRA_CARDS.forEach(c => { c.cat = 'palabras'; ALBUM_CARDS.push(c); });
+const ALBUM_TABS = [
+  { id: 'historia', label: 'HISTORIA' }, { id: 'lugares', label: 'LUGARES' },
+  { id: 'sabores', label: 'SABORES' }, { id: 'palabras', label: 'PALABRAS' }
+];
+
+/** Busca palabras costeñas en un texto: [{ p, start, end }]. */
+function findPalabras(text) {
+  const out = [];
+  PALABRAS.forEach(p => { p.rx.lastIndex = 0; let m; while ((m = p.rx.exec(text))) out.push({ p, start: m.index, end: m.index + m[0].length }); });
+  return out.sort((a, b) => a.start - b.start).filter((m, i, a) => i === 0 || m.start >= a[i - 1].end);
+}
+
 /** Fotos reales: se cargan desde Wikimedia Commons (licencias libres, con crédito). */
 function commonsPhotoUrl(file, width = 640) {
   return 'https://commons.wikimedia.org/wiki/Special:FilePath/' + encodeURIComponent(file.replace(/ /g, '_')) + '?width=' + width;
@@ -119,6 +243,8 @@ class Album {
   }
   get total() { return ALBUM_CARDS.length; }
   get count() { return ALBUM_CARDS.filter(c => this.unlocked.has(c.id)).length; }
+  totalIn(cat) { return ALBUM_CARDS.filter(c => c.cat === cat).length; }
+  countIn(cat) { return ALBUM_CARDS.filter(c => c.cat === cat && this.unlocked.has(c.id)).length; }
   has(id) { return this.unlocked.has(id); }
   card(id) { return ALBUM_CARDS.find(c => c.id === id) || null; }
 

@@ -7,6 +7,14 @@
    ========================================================= */
 
 const QUIZ_QUESTIONS = [
+  { q: '¿Qué es el cayeye, típico del Magdalena?', a: 'Un puré de guineo verde con mantequilla y queso', wrong: ['Un pescado de la Ciénaga Grande', 'Un dulce de coco con panela'],
+    why: 'El cayeye, o mote de guineo, es guineo verde machacado con mantequilla y queso costeño. Se come en Ciénaga, la Zona Bananera, Santa Marta, Fundación y Aracataca, sobre todo al desayuno.' },
+  { q: 'En la costa, cuando el vendedor te regala un poquito más, eso es...', a: 'La ñapa', wrong: ['La bulla', 'La vaina'],
+    why: 'La ñapa es lo que el vendedor te regala de más para que vuelvas. «Bulla» es ruido y «vaina» es cualquier cosa.' },
+  { q: '¿En qué año llegó el ferrocarril de Santa Marta a Ciénaga?', a: '1887', wrong: ['1612', '1994'],
+    why: 'El tren llegó en 1887 y con él la bonanza del banano. En 1612 se remontan los orígenes de la iglesia de San Juan Bautista, y en 1994 el centro histórico fue declarado Monumento Nacional.' },
+  { q: '¿Qué cuenta la leyenda de la Casa del Diablo?', a: 'Que su dueño hizo un pacto con el diablo para volverse rico', wrong: ['Que allí vivía el caimán', 'Que allí nació Tomasita'],
+    why: 'Según la leyenda, Manuel Varela hizo un pacto con el diablo para volverse rico. Es un relato popular: nadie lo ha probado, pero hace parte de la memoria de Ciénaga.' },
   { q: 'Mateo usa un sombrero «vueltiao». ¿Con qué se teje?', a: 'Con caña flecha, herencia del pueblo zenú', wrong: ['Con plástico reciclado', 'Con lana de oveja'],
     why: 'El sombrero vueltiao se teje a mano con fibras de caña flecha, una tradición del pueblo indígena zenú. En 2004 fue declarado símbolo cultural de Colombia.' },
   { q: '¿Qué día recuerda Ciénaga a Tomasita?', a: 'El 20 de enero, día de San Sebastián', wrong: ['El 25 de diciembre', 'El 7 de agosto'],
